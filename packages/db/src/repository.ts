@@ -1,10 +1,28 @@
 import type { Pool } from 'pg'
+import type { CorpusDivision } from '@songscope/schema'
 
 export interface CareerFilters {
   from?: number
   to?: number
   placeSid?: string
   itemType?: string
+}
+
+export interface PassagePagination {
+  offset?: number
+  limit?: number
+}
+
+export interface TextSearchFilters extends PassagePagination {
+  division?: CorpusDivision
+  juan?: number
+  status?: 'raw' | 'reviewed'
+}
+
+export interface AnnalsFilters {
+  fromJuan?: number
+  toJuan?: number
+  status?: 'candidate' | 'reviewed' | 'rejected'
 }
 
 export interface SongScopeRepository {
@@ -15,10 +33,148 @@ export interface SongScopeRepository {
   getAssertionEvidence(sid: string): Promise<unknown | null>
   getSource(sid: string): Promise<unknown | null>
   search(query: string): Promise<unknown>
+  getCorpusCatalog(): Promise<unknown | null>
+  getCorpusUnits(sourceItemSid: string): Promise<unknown | null>
+  getUnitPassages(unitSid: string, pagination?: PassagePagination): Promise<unknown | null>
+  getPassage(sid: string): Promise<unknown | null>
+  searchText(query: string, filters?: TextSearchFilters): Promise<unknown>
+  getEntityPassages(sid: string): Promise<unknown | null>
+  getAnnals(filters?: AnnalsFilters): Promise<unknown | null>
+  getCoverage(version?: string): Promise<unknown | null>
 }
+
+interface CorpusContextRow {
+  datasetVersion: string
+  corpusVersion: string
+  snapshotSid: string
+  contentHash: string
+  workSid: string
+  sourceTitle: string
+  directoryRevisionId: string | number
+  sourceItemSid: string
+  provider: string
+  pageTitle: string
+  pageId: string | number
+  revisionId: string | number
+  revisionTimestamp: string
+  canonicalUrl: string
+  historyUrl: string
+  attributionUrl: string
+  licenseSpdx: string
+  licenseName: string
+  licenseUrl: string
+  expected: number
+  discovered: number
+  acquired: number
+  validated: number
+  segmented: number
+  searchable: number
+  reviewed: number
+  candidateAnnotations: number
+  anomalies: unknown[]
+}
+
+const passageProjectionSelect = `SELECT sp.sid,sp.source_unit_sid AS "unitSid",su.juan,su.division,
+  sp.sequence_index AS "sequenceIndex",sp.source_text AS "sourceText",sp.normalized_text AS "normalizedText",
+  sp.checksum,sp.review_status AS "reviewStatus",
+  (SELECT revision_id FROM source_item WHERE sid=su.source_item_sid) AS "sourceRevisionId",
+  COALESCE((SELECT jsonb_agg(jsonb_build_object(
+    'sid',ta.sid,'startOffset',ta.start_offset,'endOffset',ta.end_offset,'offsetUnit',ta.offset_unit,
+    'surfaceText',ta.surface_text,'annotationType',ta.annotation_type,'targetEntitySid',ta.target_entity_sid,
+    'normalizedValue',ta.normalized_value,'status',ta.status,'method',ta.method
+  ) ORDER BY ta.start_offset,ta.end_offset,ta.annotation_type)
+    FROM text_annotation ta WHERE ta.passage_sid=sp.sid),'[]'::jsonb) AS annotations,
+  COALESCE((SELECT jsonb_agg(jsonb_build_object(
+    'locatorSid',sl.sid,'locatorValue',sl.locator_value,'quoteText',sl.quote_text,
+    'mappingSequence',slp.sequence_index,'assertions',COALESCE((
+      SELECT jsonb_agg(jsonb_build_object(
+        'assertionSid',a.sid,'subjectSid',a.subject_sid,'predicate',a.predicate,'status',a.status,'stance',el.stance
+      ) ORDER BY a.sid)
+      FROM evidence_link el JOIN assertion a ON a.sid=el.assertion_sid WHERE el.locator_sid=sl.sid
+    ),'[]'::jsonb)
+  ) ORDER BY slp.sequence_index,sl.sid)
+    FROM source_locator_passage slp JOIN source_locator sl ON sl.sid=slp.locator_sid
+    WHERE slp.passage_sid=sp.sid),'[]'::jsonb) AS locators
+  FROM source_passage sp JOIN source_unit su ON su.sid=sp.source_unit_sid`
 
 export class PostgresSongScopeRepository implements SongScopeRepository {
   constructor(private readonly pool: Pool) {}
+
+  private async getCorpusContext(version?: string): Promise<CorpusContextRow | null> {
+    const result = await this.pool.query<CorpusContextRow>(`SELECT
+      dv.version AS "datasetVersion",cs.corpus_version AS "corpusVersion",cs.sid AS "snapshotSid",
+      cs.content_hash AS "contentHash",cs.work_sid AS "workSid",sw.title AS "sourceTitle",
+      cs.directory_revision_id AS "directoryRevisionId",si.sid AS "sourceItemSid",si.provider,
+      si.page_title AS "pageTitle",si.page_id AS "pageId",si.revision_id AS "revisionId",
+      to_char(si.revision_timestamp AT TIME ZONE 'UTC','YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "revisionTimestamp",
+      si.canonical_url AS "canonicalUrl",si.history_url AS "historyUrl",si.attribution_url AS "attributionUrl",
+      si.license_spdx AS "licenseSpdx",si.license_name AS "licenseName",si.license_url AS "licenseUrl",
+      cc.expected,cc.discovered,cc.acquired,cc.validated,cc.segmented,cc.searchable,cc.reviewed,
+      cc.candidate_annotations AS "candidateAnnotations",cc.anomalies
+      FROM corpus_snapshot cs
+      JOIN source_work sw ON sw.sid=cs.work_sid
+      JOIN corpus_snapshot_item csi ON csi.snapshot_sid=cs.sid AND csi.item_role='directory'
+      JOIN source_item si ON si.sid=csi.source_item_sid
+      JOIN corpus_coverage cc ON cc.snapshot_sid=cs.sid
+      CROSS JOIN LATERAL (SELECT version FROM dataset_version ORDER BY created_at DESC LIMIT 1) dv
+      WHERE ($1::text IS NULL OR cs.corpus_version=$1 OR dv.version=$1)
+      ORDER BY cs.corpus_version DESC LIMIT 1`, [version ?? null])
+    return result.rows[0] ?? null
+  }
+
+  private corpusContextProjection(context: CorpusContextRow) {
+    return {
+      datasetVersion: context.datasetVersion,
+      corpusVersion: context.corpusVersion,
+      snapshotSid: context.snapshotSid
+    }
+  }
+
+  private coverageProjection(context: CorpusContextRow) {
+    return {
+      expected: context.expected,
+      discovered: context.discovered,
+      acquired: context.acquired,
+      validated: context.validated,
+      segmented: context.segmented,
+      searchable: context.searchable,
+      reviewed: context.reviewed,
+      candidateAnnotations: context.candidateAnnotations,
+      anomalies: context.anomalies
+    }
+  }
+
+  private corpusSourceProjection(context: CorpusContextRow) {
+    return {
+      workSid: context.workSid,
+      title: context.sourceTitle,
+      provider: context.provider,
+      directoryRevisionId: Number(context.directoryRevisionId),
+      canonicalUrl: context.canonicalUrl,
+      historyUrl: context.historyUrl,
+      license: { spdxId: context.licenseSpdx, name: context.licenseName, url: context.licenseUrl }
+    }
+  }
+
+  private async passageSourceProjection(sourceItemSid: string) {
+    const result = await this.pool.query(`SELECT sid AS "sourceItemSid",page_title AS "pageTitle",page_id AS "pageId",
+      revision_id AS "revisionId",to_char(revision_timestamp AT TIME ZONE 'UTC','YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "revisionTimestamp",
+      canonical_url AS "canonicalUrl",history_url AS "historyUrl",attribution_url AS "attributionUrl",
+      license_spdx AS "licenseSpdx",license_name AS "licenseName",license_url AS "licenseUrl"
+      FROM source_item WHERE sid=$1`, [sourceItemSid])
+    const row = result.rows[0]
+    return row ? {
+      sourceItemSid: row.sourceItemSid,
+      pageTitle: row.pageTitle,
+      pageId: Number(row.pageId),
+      revisionId: Number(row.revisionId),
+      revisionTimestamp: row.revisionTimestamp,
+      canonicalUrl: row.canonicalUrl,
+      historyUrl: row.historyUrl,
+      attributionUrl: row.attributionUrl,
+      license: { spdxId: row.licenseSpdx, name: row.licenseName, url: row.licenseUrl }
+    } : null
+  }
 
   async getDatasetVersion(): Promise<string> {
     const result = await this.pool.query<{ version: string }>('SELECT version FROM dataset_version ORDER BY created_at DESC LIMIT 1')
@@ -338,5 +494,251 @@ export class PostgresSongScopeRepository implements SongScopeRepository {
       ORDER BY type,label LIMIT 30
     `, [`%${query}%`])
     return { datasetVersion: await this.getDatasetVersion(), query, results: result.rows }
+  }
+
+  async getCorpusCatalog() {
+    const context = await this.getCorpusContext()
+    if (!context) return null
+    const [divisions, volumes] = await Promise.all([
+      this.pool.query(`SELECT sid,division,label_original AS "labelOriginal",label_normalized AS "labelNormalized",
+        sequence_index AS "sequenceIndex"
+        FROM source_unit WHERE snapshot_sid=$1 AND unit_type='work_division'
+        ORDER BY sequence_index`, [context.snapshotSid]),
+      this.pool.query(`SELECT su.sid AS "unitSid",su.source_item_sid AS "sourceItemSid",su.juan,su.division,
+        su.label_original AS "labelOriginal",su.label_normalized AS "labelNormalized",si.revision_id AS "revisionId",
+        count(DISTINCT sp.sid)::int AS "passageCount",count(DISTINCT ta.sid)::int AS "candidateAnnotationCount"
+        FROM source_unit su JOIN source_item si ON si.sid=su.source_item_sid
+        LEFT JOIN source_passage sp ON sp.source_unit_sid=su.sid
+        LEFT JOIN text_annotation ta ON ta.passage_sid=sp.sid AND ta.status='candidate'
+        WHERE su.snapshot_sid=$1 AND su.unit_type='juan'
+        GROUP BY su.sid,si.revision_id ORDER BY su.sequence_index`, [context.snapshotSid])
+    ])
+    return {
+      ...this.corpusContextProjection(context),
+      source: this.corpusSourceProjection(context),
+      coverage: this.coverageProjection(context),
+      divisions: divisions.rows.map((division) => ({
+        sid: division.sid,
+        division: division.division,
+        labelOriginal: division.labelOriginal,
+        labelNormalized: division.labelNormalized,
+        volumeCount: volumes.rows.filter((volume) => volume.division === division.division).length,
+        volumes: volumes.rows.filter((volume) => volume.division === division.division).map((volume) => ({
+          ...volume,
+          revisionId: Number(volume.revisionId)
+        }))
+      }))
+    }
+  }
+
+  async getCorpusUnits(sourceItemSid: string) {
+    const context = await this.getCorpusContext()
+    if (!context) return null
+    const exists = await this.pool.query('SELECT 1 FROM corpus_snapshot_item WHERE snapshot_sid=$1 AND source_item_sid=$2', [
+      context.snapshotSid, sourceItemSid
+    ])
+    if (!exists.rows[0]) return null
+    const units = await this.pool.query(`SELECT sid,parent_unit_sid AS "parentUnitSid",unit_type AS "unitType",division,juan,
+      label_original AS "labelOriginal",label_normalized AS "labelNormalized",sequence_index AS "sequenceIndex"
+      FROM source_unit WHERE snapshot_sid=$1 AND source_item_sid=$2 ORDER BY sequence_index,sid`, [context.snapshotSid, sourceItemSid])
+    return { ...this.corpusContextProjection(context), sourceItemSid, units: units.rows }
+  }
+
+  async getUnitPassages(unitSid: string, pagination: PassagePagination = {}) {
+    const context = await this.getCorpusContext()
+    if (!context) return null
+    const offset = Math.max(0, pagination.offset ?? 0)
+    const limit = Math.min(500, Math.max(1, pagination.limit ?? 100))
+    const unit = await this.pool.query(`SELECT su.sid AS "unitSid",su.source_item_sid AS "sourceItemSid",su.juan,su.division,
+      su.label_original AS "labelOriginal",su.label_normalized AS "labelNormalized",si.revision_id AS "revisionId",
+      count(DISTINCT sp.sid)::int AS "passageCount",count(DISTINCT ta.sid)::int AS "candidateAnnotationCount"
+      FROM source_unit su JOIN source_item si ON si.sid=su.source_item_sid
+      LEFT JOIN source_passage sp ON sp.source_unit_sid=su.sid
+      LEFT JOIN text_annotation ta ON ta.passage_sid=sp.sid AND ta.status='candidate'
+      WHERE su.sid=$1 AND su.snapshot_sid=$2 AND su.unit_type='juan'
+      GROUP BY su.sid,si.revision_id`, [unitSid, context.snapshotSid])
+    const unitRow = unit.rows[0]
+    if (!unitRow) return null
+    const passages = await this.pool.query(`${passageProjectionSelect}
+      WHERE sp.source_unit_sid=$1 ORDER BY sp.sequence_index OFFSET $2 LIMIT $3`, [unitSid, offset, limit])
+    const source = await this.passageSourceProjection(unitRow.sourceItemSid)
+    if (!source) return null
+    return {
+      ...this.corpusContextProjection(context),
+      unit: { ...unitRow, revisionId: Number(unitRow.revisionId) },
+      source,
+      pagination: { offset, limit, total: unitRow.passageCount },
+      passages: passages.rows
+    }
+  }
+
+  async getPassage(sid: string) {
+    const context = await this.getCorpusContext()
+    if (!context) return null
+    const result = await this.pool.query(`${passageProjectionSelect} WHERE sp.sid=$1 AND sp.snapshot_sid=$2`, [sid, context.snapshotSid])
+    const passage = result.rows[0]
+    if (!passage) return null
+    const unit = await this.pool.query('SELECT source_item_sid AS "sourceItemSid" FROM source_unit WHERE sid=$1', [passage.unitSid])
+    const source = await this.passageSourceProjection(unit.rows[0].sourceItemSid)
+    if (!source) return null
+    const adjacent = await this.pool.query(`SELECT sid,sequence_index AS "sequenceIndex" FROM source_passage
+      WHERE source_unit_sid=$1 AND sequence_index IN ($2-1,$2+1) ORDER BY sequence_index`, [passage.unitSid, passage.sequenceIndex])
+    const previous = adjacent.rows.find((row) => row.sequenceIndex === passage.sequenceIndex - 1) ?? null
+    const next = adjacent.rows.find((row) => row.sequenceIndex === passage.sequenceIndex + 1) ?? null
+    return {
+      ...this.corpusContextProjection(context),
+      passage,
+      source,
+      stableCitation: `《宋史》卷${passage.juan}，第${passage.sequenceIndex}段，中文维基文库 revision ${source.revisionId}，SongScope passage ${passage.sid}`,
+      previous,
+      next
+    }
+  }
+
+  async searchText(query: string, filters: TextSearchFilters = {}) {
+    const context = await this.getCorpusContext()
+    if (!context) throw new Error('Corpus snapshot is not available')
+    const offset = Math.max(0, filters.offset ?? 0)
+    const limit = Math.min(500, Math.max(1, filters.limit ?? 100))
+    const candidates = await this.pool.query(`SELECT sp.sid AS "passageSid",sp.source_unit_sid AS "unitSid",su.juan,su.division,
+      sp.sequence_index AS "sequenceIndex",coalesce(sp.normalized_text,sp.source_text) AS text,
+      sp.review_status AS "reviewStatus",si.revision_id AS "sourceRevisionId"
+      FROM source_passage sp JOIN source_unit su ON su.sid=sp.source_unit_sid
+      JOIN source_item si ON si.sid=su.source_item_sid
+      WHERE sp.snapshot_sid=$1 AND strpos(coalesce(sp.normalized_text,sp.source_text),$2)>0
+        AND ($3::text IS NULL OR su.division=$3) AND ($4::int IS NULL OR su.juan=$4)
+        AND ($5::text IS NULL OR sp.review_status=$5)
+      ORDER BY su.sequence_index,sp.sequence_index`, [
+        context.snapshotSid, query, filters.division ?? null, filters.juan ?? null, filters.status ?? null
+      ])
+    const occurrences: Array<Record<string, unknown>> = []
+    for (const row of candidates.rows) {
+      let matchIndex = row.text.indexOf(query)
+      while (matchIndex >= 0) {
+        const matchEndIndex = matchIndex + query.length
+        const contextStart = Math.max(0, matchIndex - 36)
+        const contextEnd = Math.min(row.text.length, matchEndIndex + 36)
+        occurrences.push({
+          occurrenceType: 'occurrence',
+          passageSid: row.passageSid,
+          unitSid: row.unitSid,
+          juan: row.juan,
+          division: row.division,
+          sequenceIndex: row.sequenceIndex,
+          context: `${contextStart > 0 ? '…' : ''}${row.text.slice(contextStart, contextEnd)}${contextEnd < row.text.length ? '…' : ''}`,
+          matchStart: Array.from(row.text.slice(0, matchIndex)).length,
+          matchEnd: Array.from(row.text.slice(0, matchEndIndex)).length,
+          reviewStatus: row.reviewStatus,
+          sourceRevisionId: Number(row.sourceRevisionId)
+        })
+        matchIndex = row.text.indexOf(query, matchEndIndex)
+      }
+    }
+    return {
+      ...this.corpusContextProjection(context),
+      query,
+      occurrenceLabel: '文本命中',
+      filters: { division: filters.division ?? null, juan: filters.juan ?? null, status: filters.status ?? null },
+      pagination: { offset, limit, total: occurrences.length },
+      results: occurrences.slice(offset, offset + limit),
+      coverage: this.coverageProjection(context),
+      exportMetadata: {
+        queryId: 'songshi-literal-text-search', queryVersion: '1.0.0',
+        ...this.corpusContextProjection(context), statisticalUnit: 'exact non-overlapping text occurrence',
+        columns: ['passageSid', 'juan', 'division', 'sequenceIndex', 'context', 'matchStart', 'matchEnd', 'sourceRevisionId']
+      }
+    }
+  }
+
+  async getEntityPassages(sid: string) {
+    const context = await this.getCorpusContext()
+    if (!context) return null
+    const entity = await this.pool.query('SELECT sid,label,entity_type AS "entityType" FROM entity_registry WHERE sid=$1', [sid])
+    if (!entity.rows[0]) return null
+    const stringResponse = await this.searchText(entity.rows[0].label, { limit: 500 }) as { results: unknown[] }
+    const [annotations, assertions] = await Promise.all([
+      this.pool.query(`SELECT ta.sid,ta.start_offset AS "startOffset",ta.end_offset AS "endOffset",ta.offset_unit AS "offsetUnit",
+        ta.surface_text AS "surfaceText",ta.annotation_type AS "annotationType",ta.target_entity_sid AS "targetEntitySid",
+        ta.normalized_value AS "normalizedValue",ta.status,ta.method,ta.passage_sid AS "passageSid",su.juan
+        FROM text_annotation ta JOIN source_passage sp ON sp.sid=ta.passage_sid JOIN source_unit su ON su.sid=sp.source_unit_sid
+        WHERE ta.snapshot_sid=$1 AND ta.target_entity_sid=$2 ORDER BY su.sequence_index,sp.sequence_index,ta.start_offset`, [context.snapshotSid, sid]),
+      this.pool.query(`WITH related_subjects AS (
+          SELECT $2::text AS sid
+          UNION SELECT aa.sid FROM appointment_action aa WHERE aa.person_sid=$2
+          UNION SELECT se.sid FROM service_episode se WHERE se.person_sid=$2
+          UNION SELECT ep.event_sid FROM event_participation ep WHERE ep.entity_sid=$2
+        )
+        SELECT DISTINCT a.sid AS "assertionSid",a.subject_sid AS "subjectSid",a.predicate,sl.sid AS "locatorSid",
+          slp.passage_sid AS "passageSid",el.stance
+        FROM related_subjects rs JOIN assertion a ON a.subject_sid=rs.sid AND a.status='accepted'
+        JOIN evidence_link el ON el.assertion_sid=a.sid AND el.stance='supports'
+        JOIN source_locator sl ON sl.sid=el.locator_sid
+        JOIN source_locator_passage slp ON slp.locator_sid=sl.sid
+        JOIN source_passage sp ON sp.sid=slp.passage_sid AND sp.snapshot_sid=$1
+        ORDER BY slp.passage_sid,a.sid`, [context.snapshotSid, sid])
+    ])
+    return {
+      ...this.corpusContextProjection(context),
+      entity: entity.rows[0],
+      stringOccurrences: stringResponse.results,
+      resolvedAnnotations: annotations.rows.map((row) => ({
+        annotation: {
+          sid: row.sid, startOffset: row.startOffset, endOffset: row.endOffset, offsetUnit: row.offsetUnit,
+          surfaceText: row.surfaceText, annotationType: row.annotationType, targetEntitySid: row.targetEntitySid,
+          normalizedValue: row.normalizedValue, status: row.status, method: row.method
+        },
+        passageSid: row.passageSid,
+        juan: row.juan
+      })),
+      acceptedAssertions: assertions.rows
+    }
+  }
+
+  async getAnnals(filters: AnnalsFilters = {}) {
+    const context = await this.getCorpusContext()
+    if (!context) return null
+    const fromJuan = Math.max(14, filters.fromJuan ?? 14)
+    const toJuan = Math.min(16, filters.toJuan ?? 16)
+    const rows = await this.pool.query(`${passageProjectionSelect}
+      WHERE sp.snapshot_sid=$1 AND su.juan BETWEEN $2 AND $3 ORDER BY su.sequence_index,sp.sequence_index`, [
+        context.snapshotSid, fromJuan, toJuan
+      ])
+    const annotationTypes = ['chronology', 'person', 'place', 'institution', 'office', 'appointment-action', 'event-term'] as const
+    return {
+      ...this.corpusContextProjection(context),
+      query: {
+        id: 'shenzong-annals-v1', version: '1.0.0', title: '神宗本纪原文顺序纪事',
+        scope: '《宋史》卷十四至卷十六；仅显示原文与候选标注，不推定公历日期。',
+        statisticalUnit: 'source passage', fromJuan, toJuan, annotationStatus: filters.status ?? null
+      },
+      rows: rows.rows.map((row) => {
+        const selectedAnnotations = (row.annotations as Array<{ annotationType: string; status: string }>).filter(
+          (annotation) => filters.status === undefined || annotation.status === filters.status
+        )
+        const candidateCounts = Object.fromEntries(annotationTypes.map((type) => [
+          type, selectedAnnotations.filter((annotation) => annotation.annotationType === type).length
+        ]))
+        return {
+          passageSid: row.sid, unitSid: row.unitSid, juan: row.juan, sequenceIndex: row.sequenceIndex,
+          sourceText: row.sourceText, normalizedText: row.normalizedText,
+          chronology: selectedAnnotations.filter((annotation) => annotation.annotationType === 'chronology'),
+          candidateCounts, sourceRevisionId: Number(row.sourceRevisionId)
+        }
+      }),
+      exportMetadata: {
+        queryId: 'shenzong-annals-v1', queryVersion: '1.0.0', ...this.corpusContextProjection(context),
+        statisticalUnit: 'source passage',
+        columns: ['passageSid', 'juan', 'sequenceIndex', 'sourceText', 'chronology', 'candidateCounts', 'sourceRevisionId']
+      }
+    }
+  }
+
+  async getCoverage(version?: string) {
+    const context = await this.getCorpusContext(version)
+    return context ? {
+      ...this.corpusContextProjection(context),
+      source: this.corpusSourceProjection(context),
+      coverage: this.coverageProjection(context)
+    } : null
   }
 }

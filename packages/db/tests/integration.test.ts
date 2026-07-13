@@ -1,5 +1,17 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import { careerTimelineResponseSchema, eventResponseSchema, sourceResponseSchema } from '@songscope/schema'
+import {
+  annalsResponseSchema,
+  careerTimelineResponseSchema,
+  corpusCatalogResponseSchema,
+  corpusUnitsResponseSchema,
+  coverageResponseSchema,
+  entityPassagesResponseSchema,
+  eventResponseSchema,
+  passageDetailResponseSchema,
+  sourceResponseSchema,
+  textSearchResponseSchema,
+  unitPassagesResponseSchema
+} from '@songscope/schema'
 import { createPool } from '../src/client.js'
 import { PostgresSongScopeRepository } from '../src/repository.js'
 
@@ -198,5 +210,45 @@ suite('PostgreSQL/PostGIS SongScope v0.3 dataset', () => {
     const occurrences = await pool.query(`SELECT count(*)::int AS count FROM source_passage
       WHERE search_text LIKE '%' || $1 || '%'`, ['徙知'])
     expect(occurrences.rows[0].count).toBeGreaterThan(0)
+  })
+
+  it('projects all 496 volumes through the validated corpus API contract', async () => {
+    const catalog = corpusCatalogResponseSchema.parse(await repo.getCorpusCatalog())
+    expect(catalog.divisions).toHaveLength(5)
+    expect(catalog.divisions.flatMap((division) => division.volumes)).toHaveLength(496)
+    expect(catalog.coverage.searchable).toBe(496)
+
+    const volume14 = catalog.divisions.flatMap((division) => division.volumes).find((volume) => volume.juan === 14)!
+    const units = corpusUnitsResponseSchema.parse(await repo.getCorpusUnits(volume14.sourceItemSid))
+    expect(units.units.map((unit) => unit.juan)).toEqual([14])
+    const passages = unitPassagesResponseSchema.parse(await repo.getUnitPassages(volume14.unitSid, { limit: 2 }))
+    expect(passages.passages).toHaveLength(2)
+    expect(passages.source.revisionId).toBe(volume14.revisionId)
+    const detail = passageDetailResponseSchema.parse(await repo.getPassage(passages.passages[0].sid))
+    expect(detail.stableCitation).toContain(`revision ${volume14.revisionId}`)
+    expect(detail.next?.sequenceIndex).toBe(2)
+  })
+
+  it('counts literal occurrences and keeps entity evidence layers separate', async () => {
+    const search = textSearchResponseSchema.parse(await repo.searchText('徙知', { limit: 20 }))
+    expect(search.occurrenceLabel).toBe('文本命中')
+    expect(search.pagination.total).toBeGreaterThan(0)
+    expect(search.results.every((result) => result.occurrenceType === 'occurrence')).toBe(true)
+
+    const sushi = entityPassagesResponseSchema.parse(await repo.getEntityPassages('person:sushi'))
+    expect(sushi.entity.label).toBe('苏轼')
+    expect(sushi.acceptedAssertions.length).toBeGreaterThan(0)
+    expect(sushi.acceptedAssertions.every((assertion) => assertion.passageSid.startsWith('source:passage:'))).toBe(true)
+  })
+
+  it('returns source-order annals candidates and explicit corpus coverage', async () => {
+    const annals = annalsResponseSchema.parse(await repo.getAnnals({ fromJuan: 14, toJuan: 16, status: 'candidate' }))
+    expect(annals.rows).toHaveLength(258)
+    expect(annals.rows[0].juan).toBe(14)
+    expect(annals.rows.at(-1)?.juan).toBe(16)
+    expect(annals.query.scope).toContain('不推定公历日期')
+    expect(await repo.getCoverage('test-does-not-exist')).toBeNull()
+    const currentCoverage = coverageResponseSchema.parse(await repo.getCoverage('2026.07.13-sushi-career.1'))
+    expect(currentCoverage.coverage).toMatchObject({ expected: 496, validated: 496, searchable: 496 })
   })
 })
