@@ -1,0 +1,37 @@
+.timeline-research-shell { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+.timeline-research-shell:has(.evidence-drawer) { grid-template-columns: minmax(0, 1fr) minmax(320px, 420px); align-items: start; }
+.research-data-banner { display: grid; grid-template-columns: auto auto 1fr; align-items: center; gap: 10px; border: 1px solid rgba(108,154,137,.35); background: rgba(108,154,137,.08); border-radius: 12px; padding: 11px 14px; margin-bottom: 20px; }
+.research-data-banner span { color: var(--jade); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+.research-data-banner strong { font-size: 11px; }
+.research-data-banner p { color: var(--muted); font-size: 11px; margin: 0; text-align: right; }
+.research-data-banner.fallback { grid-template-columns: auto 1fr; border-color: rgba(201,167,101,.25); background: var(--gold-soft); }
+.research-data-banner.fallback span { color: var(--gold); }
+.timeline-item.evidence-backed .timeline-content { border: 1px solid rgba(108,154,137,.24); border-radius: 12px; padding: 14px 16px 16px; margin: -12px 0 20px 4px; background: rgba(108,154,137,.035); }
+.evidence-button { display: inline-flex; align-items: center; gap: 7px; margin-top: 12px; padding: 7px 10px; border: 1px solid rgba(108,154,137,.35); background: rgba(108,154,137,.08); color: #9fc1b4; border-radius: 8px; cursor: pointer; font-size: 11px; }
+.evidence-button:hover { border-color: var(--jade); color: #c8e0d7; }
+.evidence-drawer { position: sticky; top: 98px; max-height: calc(100vh - 125px); overflow: auto; border: 1px solid var(--line); background: #171610; border-radius: 15px; padding: 20px; box-shadow: 0 20px 60px rgba(0,0,0,.25); }
+.evidence-drawer-header { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; border-bottom: 1px solid var(--line); padding-bottom: 14px; margin-bottom: 16px; }
+.evidence-drawer-header h2 { font-size: 24px; margin: 0; }
+.evidence-drawer-header button { border: 0; background: transparent; color: var(--faint); cursor: pointer; }
+.evidence-state { color: var(--muted); padding: 28px 0; }
+.evidence-state.error { color: #d08b82; }
+.assertion-summary { border: 1px solid var(--line-soft); background: var(--panel-2); border-radius: 12px; padding: 14px; display: grid; gap: 8px; }
+.assertion-summary > div { display: flex; justify-content: space-between; gap: 12px; font-size: 11px; }
+.assertion-summary span { color: var(--faint); }
+.assertion-summary code { color: var(--gold); font-size: 10px; overflow-wrap: anywhere; }
+.assertion-summary p { color: var(--muted); font-size: 12px; line-height: 1.65; margin: 5px 0 0; }
+.evidence-list { display: grid; gap: 12px; margin-top: 14px; }
+.evidence-list article { border: 1px solid var(--line-soft); border-radius: 12px; padding: 15px; }
+.evidence-title { display: flex; align-items: center; gap: 9px; }
+.evidence-title span { color: var(--jade); border: 1px solid rgba(108,154,137,.3); border-radius: 999px; padding: 3px 7px; font-size: 9px; text-transform: uppercase; }
+.evidence-title strong { font: 500 15px Georgia, "Songti SC", serif; }
+.source-citation, .evidence-list article > p { color: var(--muted); font-size: 11px; line-height: 1.65; }
+.evidence-list dl { display: grid; gap: 5px; margin: 12px 0; }
+.evidence-list dl div { display: flex; justify-content: space-between; gap: 12px; font-size: 10px; }
+.evidence-list dt { color: var(--faint); }
+.evidence-list dd { margin: 0; text-align: right; }
+.evidence-list blockquote { margin: 12px 0; padding: 11px 13px; border-left: 2px solid var(--gold); background: var(--gold-soft); color: #d9cfbd; font: 13px/1.8 Georgia, "Songti SC", serif; }
+.evidence-list a { display: inline-flex; align-items: center; gap: 6px; color: var(--gold); text-decoration: none; font-size: 11px; }
+.dataset-version { color: var(--faint); font-size: 9px; text-align: right; margin: 16px 0 0; }
+@media (max-width: 1120px) { .timeline-research-shell:has(.evidence-drawer) { grid-template-columns: 1fr; } .evidence-drawer { position: static; max-height: none; } }
+@media (max-width: 650px) { .research-data-banner { grid-template-columns: 1fr; } .research-data-banner p { text-align: left; } .timeline-item.evidence-backed .timeline-content { padding: 12px; } }
