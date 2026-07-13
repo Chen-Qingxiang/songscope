@@ -1,65 +1,89 @@
-import { useEffect, useState } from 'react'
-import { Clock3, Database, Code2, Home, Map, Menu, Network, Search, X } from 'lucide-react'
-import { DashboardPage } from './pages/DashboardPage'
-import { MapPage } from './pages/MapPage'
-import { ModelPage } from './pages/ModelPage'
-import { NetworkPage } from './pages/NetworkPage'
-import { TimelinePage } from './pages/TimelinePage'
-import { searchResearchData, type SearchResponse } from './lib/researchApi'
+import { useEffect, useState, type FormEvent } from 'react'
+import { BookOpenText, Code2, Database, FileSearch, House, Menu, Rows3, Search, TableProperties, Users, X } from 'lucide-react'
+import {
+  AnnalsPage,
+  CorpusPage,
+  DatasetPage,
+  EntitiesPage,
+  HomePage,
+  ResearchQueriesPage,
+  SearchPage,
+  type Navigate,
+  type RouteParams
+} from './pages/CorpusFirstPages'
 
 const navItems = [
-  { id: 'dashboard', label: '总览', icon: Home },
-  { id: 'timeline', label: '时间轴', icon: Clock3 },
-  { id: 'map', label: '历史地图', icon: Map },
-  { id: 'network', label: '人物网络', icon: Network },
-  { id: 'model', label: '数据模型', icon: Database }
-]
+  { id: 'corpus', label: '史料', icon: BookOpenText },
+  { id: 'search', label: '检索', icon: FileSearch },
+  { id: 'annals', label: '纪事', icon: Rows3 },
+  { id: 'entities', label: '实体', icon: Users },
+  { id: 'queries', label: '研究查询', icon: TableProperties },
+  { id: 'dataset', label: '数据版本', icon: Database }
+] as const
+
+interface RouteState {
+  view: string
+  params: RouteParams
+}
+
+function readRoute(): RouteState {
+  const search = new URLSearchParams(window.location.search)
+  const view = search.get('view') ?? 'home'
+  const params: RouteParams = {}
+  for (const key of ['q', 'division', 'juan', 'passage', 'status', 'focus'] as const) {
+    const value = search.get(key)
+    if (value) params[key] = value
+  }
+  return { view, params }
+}
 
 function App() {
-  const [page, setPage] = useState('dashboard')
-  const [query, setQuery] = useState('')
+  const [route, setRoute] = useState<RouteState>(readRoute)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [search, setSearch] = useState<SearchResponse | null>(null)
-  const [searchError, setSearchError] = useState<string | null>(null)
+  const [topQuery, setTopQuery] = useState('')
 
   useEffect(() => {
-    const normalized = query.trim()
-    if (!normalized) { setSearch(null); setSearchError(null); return }
-    const timer = window.setTimeout(() => {
-      searchResearchData(normalized).then((result) => { setSearch(result); setSearchError(null) }).catch(() => setSearchError('正式数据搜索暂不可用；请检查本地 API。'))
-    }, 250)
-    return () => window.clearTimeout(timer)
-  }, [query])
+    const update = () => setRoute(readRoute())
+    window.addEventListener('popstate', update)
+    return () => window.removeEventListener('popstate', update)
+  }, [])
 
-  const content = page === 'timeline' ? <TimelinePage /> : page === 'map' ? <MapPage /> : page === 'network' ? <NetworkPage /> : page === 'model' ? <ModelPage /> : <DashboardPage onNavigate={setPage} />
-
-  function navigate(id: string) {
-    setPage(id)
+  const navigate: Navigate = (view, params = {}) => {
+    const search = new URLSearchParams({ view })
+    for (const [key, value] of Object.entries(params)) if (value) search.set(key, value)
+    window.history.pushState({}, '', `${window.location.pathname}?${search}`)
+    setRoute({ view, params })
     setMenuOpen(false)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  return (
-    <div className="app-shell">
-      <aside className={`sidebar ${menuOpen ? 'open' : ''}`}>
-        <div className="brand"><div className="brand-seal">宋</div><div><strong>观宋</strong><span>SongScope</span></div></div>
-        <nav>{navItems.map(({ id, label, icon: Icon }) => <button key={id} className={page === id ? 'active' : ''} onClick={() => navigate(id)}><Icon size={18} /><span>{label}</span></button>)}</nav>
-        <div className="sidebar-footer"><p>DATASET</p><strong>Verified v0.2</strong><span>苏轼杭州至黄州；人物网络仍为 prototype</span><a href="https://github.com/Chen-Qingxiang/songscope" target="_blank" rel="noreferrer"><Code2 size={16} /> GitHub</a></div>
-      </aside>
-      {menuOpen && <button className="sidebar-backdrop" aria-label="关闭菜单" onClick={() => setMenuOpen(false)} />}
+  function submitTopSearch(event: FormEvent) {
+    event.preventDefault()
+    if (!topQuery.trim()) return
+    navigate('search', { q: topQuery.trim() })
+    setTopQuery('')
+  }
 
-      <main className="main-area">
-        <header className="topbar">
-          <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="打开菜单">{menuOpen ? <X /> : <Menu />}</button>
-          <div className="search-box"><Search size={17} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索人物、地点、事件或作品…" />{query && <button onClick={() => setQuery('')}><X size={15} /></button>}
-            {query && <div className="search-results">{searchError ? <div className="search-empty">{searchError}</div> : search?.results.length ? search.results.slice(0, 7).map((item) => <button key={item.sid} onClick={() => setQuery('')}><span>{item.type}</span><strong>{item.label}</strong><p>{item.description}</p></button>) : <div className="search-empty">{search ? '正式数据中没有匹配记录' : '正在搜索正式数据……'}</div>}</div>}
-          </div>
-          <div className="topbar-status"><span className="status-dot" />苏轼 v0.2 正式数据</div>
-        </header>
-        <div className="content-wrap">{content}</div>
-      </main>
-    </div>
-  )
+  const content = route.view === 'corpus' ? <CorpusPage params={route.params} navigate={navigate} />
+    : route.view === 'search' ? <SearchPage params={route.params} navigate={navigate} />
+      : route.view === 'annals' ? <AnnalsPage params={route.params} navigate={navigate} />
+        : route.view === 'entities' ? <EntitiesPage navigate={navigate} />
+          : route.view === 'queries' ? <ResearchQueriesPage navigate={navigate} />
+            : route.view === 'dataset' ? <DatasetPage />
+              : <HomePage navigate={navigate} />
+
+  return <div className="app-shell">
+    <aside className={`sidebar ${menuOpen ? 'open' : ''}`}>
+      <button className="brand brand-button" onClick={() => navigate('home')}><div className="brand-seal">宋</div><div><strong>观宋</strong><span>SongScope</span></div></button>
+      <nav>{navItems.map(({ id, label, icon: Icon }) => <button key={id} className={route.view === id ? 'active' : ''} onClick={() => navigate(id)}><Icon size={18} /><span>{label}</span></button>)}</nav>
+      <div className="sidebar-footer"><p>CORPUS-FIRST v0.3</p><strong>《宋史》固定语料</strong><span>496卷 · 原文可追溯 · 候选与正式数据分层</span><button onClick={() => navigate('home')}><House size={15} /> 返回首页</button><a href="https://github.com/Chen-Qingxiang/songscope" target="_blank" rel="noreferrer"><Code2 size={16} /> GitHub</a></div>
+    </aside>
+    {menuOpen && <button className="sidebar-backdrop" aria-label="关闭菜单" onClick={() => setMenuOpen(false)} />}
+    <main className="main-area">
+      <header className="topbar"><button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="打开菜单">{menuOpen ? <X /> : <Menu />}</button><form className="search-box" onSubmit={submitTopSearch}><Search size={17} /><input value={topQuery} onChange={(event) => setTopQuery(event.target.value)} placeholder="检索《宋史》原文…" /><button aria-label="提交检索"><Search size={15} /></button></form><div className="topbar-status"><span className="status-dot" />固定语料 · 研究数据分层</div></header>
+      <div className="content-wrap">{content}</div>
+    </main>
+  </div>
 }
 
 export default App

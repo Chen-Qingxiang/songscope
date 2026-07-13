@@ -601,11 +601,11 @@ export class PostgresSongScopeRepository implements SongScopeRepository {
     const offset = Math.max(0, filters.offset ?? 0)
     const limit = Math.min(500, Math.max(1, filters.limit ?? 100))
     const candidates = await this.pool.query(`SELECT sp.sid AS "passageSid",sp.source_unit_sid AS "unitSid",su.juan,su.division,
-      sp.sequence_index AS "sequenceIndex",coalesce(sp.normalized_text,sp.source_text) AS text,
+      sp.sequence_index AS "sequenceIndex",sp.source_text AS text,
       sp.review_status AS "reviewStatus",si.revision_id AS "sourceRevisionId"
       FROM source_passage sp JOIN source_unit su ON su.sid=sp.source_unit_sid
       JOIN source_item si ON si.sid=su.source_item_sid
-      WHERE sp.snapshot_sid=$1 AND strpos(coalesce(sp.normalized_text,sp.source_text),$2)>0
+      WHERE sp.snapshot_sid=$1 AND strpos(sp.source_text,$2)>0
         AND ($3::text IS NULL OR su.division=$3) AND ($4::int IS NULL OR su.juan=$4)
         AND ($5::text IS NULL OR sp.review_status=$5)
       ORDER BY su.sequence_index,sp.sequence_index`, [
@@ -653,9 +653,11 @@ export class PostgresSongScopeRepository implements SongScopeRepository {
   async getEntityPassages(sid: string) {
     const context = await this.getCorpusContext()
     if (!context) return null
-    const entity = await this.pool.query('SELECT sid,label,entity_type AS "entityType" FROM entity_registry WHERE sid=$1', [sid])
+    const entity = await this.pool.query(`SELECT er.sid,er.label,er.entity_type AS "entityType",
+      coalesce(p.traditional_name,er.label) AS "searchLabel"
+      FROM entity_registry er LEFT JOIN person p ON p.sid=er.sid WHERE er.sid=$1`, [sid])
     if (!entity.rows[0]) return null
-    const stringResponse = await this.searchText(entity.rows[0].label, { limit: 500 }) as { results: unknown[] }
+    const stringResponse = await this.searchText(entity.rows[0].searchLabel, { limit: 500 }) as { results: unknown[] }
     const [annotations, assertions] = await Promise.all([
       this.pool.query(`SELECT ta.sid,ta.start_offset AS "startOffset",ta.end_offset AS "endOffset",ta.offset_unit AS "offsetUnit",
         ta.surface_text AS "surfaceText",ta.annotation_type AS "annotationType",ta.target_entity_sid AS "targetEntitySid",
@@ -679,7 +681,7 @@ export class PostgresSongScopeRepository implements SongScopeRepository {
     ])
     return {
       ...this.corpusContextProjection(context),
-      entity: entity.rows[0],
+      entity: { sid: entity.rows[0].sid, label: entity.rows[0].label, entityType: entity.rows[0].entityType },
       stringOccurrences: stringResponse.results,
       resolvedAnnotations: annotations.rows.map((row) => ({
         annotation: {

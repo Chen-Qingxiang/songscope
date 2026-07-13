@@ -201,7 +201,7 @@ export function createRequestHandler(repository: SongScopeRepository) {
       if (coverageMatch) {
         const version = coverageMatch[1]
         if (!version || version.length > 120) return error('invalid_query', '数据版本无效', 400)
-        const result = await repository.getCoverage(version)
+        const result = await repository.getCoverage(version === 'current' ? undefined : version)
         return result ? json(coverageResponseSchema.parse(result)) : error('not_found', '未找到数据版本覆盖报告', 404)
       }
 
