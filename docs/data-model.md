@@ -1,5 +1,7 @@
 # Data model
 
+> 本文是 `v0.1` 原型阶段的模型摘要。项目的规范性设计现已迁移到 [`design-book/README.md`](design-book/README.md)，尤其参见[概念模型](design-book/01-conceptual-model.md)、[官制与除授模型](design-book/06-office-appointment.md)和[来源、断言与证据模型](design-book/07-sources-assertions.md)。若本文与设计书冲突，以设计书为准。
+
 ## 基本原则：记录“断言”，而不仅是“事实”
 
 严格来说，“苏轼于某年担任某职”是某个来源提出的一条断言。未来正式数据库建议引入 `Assertion`：
