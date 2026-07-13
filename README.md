@@ -4,7 +4,9 @@ SongScope 是一个证据可追溯、可统计、可校勘的宋史数字研究�
 
 在线只读版可直接打开：<https://chen-qingxiang.github.io/songscope/>。GitHub Pages 构建会内置 `data/curated/` 的 verified 数据快照，因此浏览地图、时间轴、搜索和证据链不需要在本地运行 Node.js、PostgreSQL 或 `npm run dev`。
 
-项目规范见 [`docs/design-book/README.md`](docs/design-book/README.md)，本轮架构判断见 [`docs/implementation-v0.2.md`](docs/implementation-v0.2.md)。
+当前可运行实现仍是 v0.2 苏轼纵向样本；下一轮不会继续把苏轼扩成产品中心，而将转向《宋史》语料、纪事索引、证据阅读和研究查询。
+
+项目规范见 [`docs/design-book/README.md`](docs/design-book/README.md)，产品重定向见 [`docs/design-book/11-corpus-first-product.md`](docs/design-book/11-corpus-first-product.md)，下一轮实施边界见 [`docs/implementation-v0.3.md`](docs/implementation-v0.3.md)。
 
 ## 一条命令启动
 

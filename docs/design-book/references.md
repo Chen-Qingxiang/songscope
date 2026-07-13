@@ -54,6 +54,22 @@
 - 官网：<https://ctext.org/>
 - 用途：古籍全文检索、文本定位和后续文本处理；正式引用仍需记录具体版本与定位。
 
+## 《宋史》可检索语料载体
+
+### 中文维基文库《宋史》
+
+- 目录页：<https://zh.wikisource.org/wiki/宋史>
+- v0.3 目录基线：<https://zh.wikisource.org/w/index.php?title=宋史&oldid=2535238>
+- 目录结构：本纪、志、表、列传、附录，共列 496 卷。
+- 产品用途：作为 v0.3 可固定、可全文检索的电子转录载体，并为逐卷 passage 提供页面与 revision 定位。
+- 研究限制：协作式电子转录不是权威点校本；页面文字、标点、转换和修订状态必须与抽象作品分层记录。
+- 原作状态：目录页标示元代《宋史》原作在全世界属于公有领域。
+- 网页再利用：目录页标示站点文字按 CC BY-SA 4.0 提供，并提示附加条款可能适用；Wikimedia 使用条款要求重用社区页面时保留适用许可和合理署名。
+- 许可说明：<https://zh.wikisource.org/zh-hans/Wikisource:版权信息/全文>
+- Wikimedia 使用条款：<https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use>
+
+每次 acquisition 必须逐页保存 canonical URL、page ID、revision ID、历史或署名入口、适用许可和 checksum。不能仅凭本页的概括替代逐页核查，也不能把网页转录与现代点校本视为同一 manifestation。
+
 ## 首批史料验证
 
 ### 《宋史》卷三百三十八·苏轼传
@@ -61,6 +77,12 @@
 - 在线文本：<https://zh.wikisource.org/wiki/宋史/卷338>
 - 用于验证：凤翔任官、杭州通判、密州/徐州/湖州迁徙、徐州水灾、乌台诗案、黄州安置及东坡名号等案例。
 - 正式数据应进一步对照权威点校本、年谱、文集和编年史料。
+
+### 《宋史》卷十四至卷十六·神宗本纪
+
+- 在线目录：<https://zh.wikisource.org/wiki/宋史#本紀>
+- 用于 v0.3：建立连续本纪 passage、原始纪年浏览、全文检索、候选标注和纪事投影。
+- 新增自动抽取内容在人工审核前只能是 candidate annotation 或 proposed assertion。
 
 ## 设计立场
 
