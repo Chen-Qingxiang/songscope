@@ -6,7 +6,7 @@ import { PostgresSongScopeRepository } from '../src/repository.js'
 const run = Boolean(process.env.DATABASE_URL)
 const suite = run ? describe : describe.skip
 
-suite('PostgreSQL/PostGIS SongScope v0.2 dataset', () => {
+suite('PostgreSQL/PostGIS SongScope v0.3 dataset', () => {
   let pool: ReturnType<typeof createPool>
   let repo: PostgresSongScopeRepository
   afterAll(() => pool?.end())
@@ -125,5 +125,78 @@ suite('PostgreSQL/PostGIS SongScope v0.2 dataset', () => {
     const places = await pool.query(`SELECT count(*)::int AS count FROM place
       WHERE geom IS NOT NULL AND geometry_status='modern-proxy'`)
     expect(places.rows[0].count).toBe(6)
+  })
+
+  it('imports the fixed 496-volume corpus snapshot without duplicate or missing records', async () => {
+    const snapshot = await pool.query(`SELECT corpus_version,content_hash,directory_revision_id,expected_volumes
+      FROM corpus_snapshot`)
+    expect(snapshot.rows).toEqual([expect.objectContaining({
+      corpus_version: 'songshi-wikisource-r2535238-f3b6041f6161',
+      content_hash: 'f3b6041f6161819b0e08c7d63f8c1b500cd7f8206b41d26218477c47b9ebf525',
+      directory_revision_id: '2535238',
+      expected_volumes: 496
+    })])
+    const counts = await pool.query(`SELECT
+      (SELECT count(*)::int FROM corpus_snapshot_item WHERE item_role='volume') AS volumes,
+      (SELECT count(*)::int FROM source_unit) AS units,
+      (SELECT count(*)::int FROM source_passage) AS passages,
+      (SELECT count(*)::int FROM text_annotation) AS annotations`)
+    expect(counts.rows[0]).toEqual({ volumes: 496, units: 501, passages: 39924, annotations: 1340 })
+    const coverage = await pool.query('SELECT * FROM corpus_coverage')
+    expect(coverage.rows[0]).toMatchObject({
+      expected: 496, discovered: 496, acquired: 496, validated: 496,
+      segmented: 496, searchable: 496, reviewed: 0, candidate_annotations: 1340,
+      anomalies: []
+    })
+  })
+
+  it('maps the three legacy volume 338 locators to stable revision-specific passages', async () => {
+    const mappings = await pool.query(`SELECT sl.sid,array_agg(sp.sequence_index ORDER BY slp.sequence_index) AS passages,
+      min(si.revision_id)::text AS revision_id
+      FROM source_locator sl
+      JOIN source_locator_passage slp ON slp.locator_sid=sl.sid
+      JOIN source_passage sp ON sp.sid=slp.passage_sid
+      JOIN source_item si ON si.sid=sl.source_item_sid
+      WHERE sl.sid LIKE 'locator:songshi-338-%'
+      GROUP BY sl.sid ORDER BY sl.sid`)
+    expect(mappings.rows).toEqual([
+      { sid: 'locator:songshi-338-hangzhou-mizhou', passages: [20, 21], revision_id: '1458054' },
+      { sid: 'locator:songshi-338-huzhou-wutai-huangzhou', passages: [24], revision_id: '1458054' },
+      { sid: 'locator:songshi-338-xuzhou-flood', passages: [23], revision_id: '1458054' }
+    ])
+    const brokenEvidence = await pool.query('SELECT * FROM accepted_assertions_without_support')
+    expect(brokenEvidence.rows).toHaveLength(0)
+  })
+
+  it('keeps generated annotations candidate-only and enforces exact passage spans', async () => {
+    const statuses = await pool.query('SELECT status,count(*)::int AS count FROM text_annotation GROUP BY status')
+    expect(statuses.rows).toEqual([{ status: 'candidate', count: 1340 }])
+    const assertions = await pool.query(`SELECT count(*)::int AS count FROM assertion
+      WHERE sid LIKE 'assertion:songshi-wikisource:%' AND status='accepted'`)
+    expect(assertions.rows[0].count).toBe(0)
+
+    const passage = await pool.query('SELECT sid,snapshot_sid FROM source_passage ORDER BY sid LIMIT 1')
+    await pool.query('BEGIN')
+    try {
+      await pool.query(`INSERT INTO entity_registry(sid,entity_type,label)
+        VALUES ('curation:annotation:invalid-span','text_annotation','invalid span')`)
+      await expect(pool.query(`INSERT INTO text_annotation(
+        sid,snapshot_sid,passage_sid,start_offset,end_offset,offset_unit,surface_text,
+        annotation_type,status,method,curation_activity_sid)
+        VALUES ($1,$2,$3,0,1,'unicode-code-point','不匹配','person','candidate','test',$4)`, [
+        'curation:annotation:invalid-span', passage.rows[0].snapshot_sid, passage.rows[0].sid,
+        'curation:songshi-shenzong-rules-v1'
+      ])).rejects.toThrow(/surface text does not match/)
+    } finally {
+      await pool.query('ROLLBACK')
+    }
+  })
+
+  it('has trigram passage search available for Chinese occurrences', async () => {
+    const extension = await pool.query("SELECT extversion FROM pg_extension WHERE extname='pg_trgm'")
+    expect(extension.rows).toHaveLength(1)
+    const occurrences = await pool.query(`SELECT count(*)::int AS count FROM source_passage
+      WHERE search_text LIKE '%' || $1 || '%'`, ['徙知'])
+    expect(occurrences.rows[0].count).toBeGreaterThan(0)
   })
 })

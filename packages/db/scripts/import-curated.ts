@@ -67,7 +67,7 @@ try {
     await client.query('INSERT INTO source_work VALUES ($1,$2,$3,$4)', [item.sid, item.title, item.creator, item.workType])
   }
   for (const item of dataset.sourceItems) {
-    await client.query('INSERT INTO source_item VALUES ($1,$2,$3,$4,$5)', [item.sid, item.workSid, item.label, item.url, item.citation])
+    await client.query('INSERT INTO source_item(sid,work_sid,label,url,citation) VALUES ($1,$2,$3,$4,$5)', [item.sid, item.workSid, item.label, item.url, item.citation])
   }
   for (const item of dataset.passages) {
     await client.query('INSERT INTO source_locator VALUES ($1,$2,$3,$4,$5)', [

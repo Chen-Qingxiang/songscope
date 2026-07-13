@@ -14,12 +14,13 @@
     "test:db": "vitest run packages/db/tests/integration.test.ts",
     "corpus:acquire": "tsx packages/db/scripts/acquire-corpus.ts",
     "corpus:validate": "tsx packages/db/scripts/validate-corpus.ts",
+    "corpus:import": "tsx packages/db/scripts/import-corpus.ts",
     "corpus:coverage": "tsx packages/db/scripts/report-corpus-coverage.ts",
     "data:validate": "tsx packages/db/scripts/validate-curated.ts",
     "data:import": "tsx packages/db/scripts/import-curated.ts",
     "db:migrate": "tsx packages/db/scripts/migrate.ts",
-    "db:seed": "npm run data:import",
-    "db:reset": "npm run db:migrate && npm run data:import",
+    "db:seed": "npm run data:import && npm run corpus:import",
+    "db:reset": "npm run db:migrate && npm run data:import && npm run corpus:import",
     "verify": "npm run corpus:validate && npm run data:validate && npm run typecheck && npm test && npm run test:db && npm run build"
   },
   "dependencies": {
