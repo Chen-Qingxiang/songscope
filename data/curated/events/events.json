@@ -1,0 +1,156 @@
+[
+  {
+    "sid": "event:appointment:sushi-hangzhou-1071",
+    "eventType": "appointment",
+    "label": "通判杭州",
+    "temporalExtentSid": "time:1071-year",
+    "placeSid": "place:hangzhou",
+    "parentEventSid": null,
+    "status": "verified",
+    "sequence": 10,
+    "description": "苏轼乞外后获通判杭州；任命动作与随后实际任职阶段分开。"
+  },
+  {
+    "sid": "event:movement:sushi-hangzhou-mizhou-1074",
+    "eventType": "movement",
+    "label": "由杭州迁往密州",
+    "temporalExtentSid": "time:1074-year",
+    "placeSid": "place:mizhou",
+    "parentEventSid": null,
+    "status": "verified",
+    "sequence": 31,
+    "description": "由“自杭徙知密州”抽取的地点变化；路线只表示先后连接。"
+  },
+  {
+    "sid": "event:appointment:sushi-mizhou-1074",
+    "eventType": "appointment",
+    "label": "徙知密州",
+    "temporalExtentSid": "time:1074-year",
+    "placeSid": "place:mizhou",
+    "parentEventSid": null,
+    "status": "verified",
+    "sequence": 30,
+    "description": "《宋史》与苏辙墓志所载调任动作；不等同于完整密州任期。"
+  },
+  {
+    "sid": "event:movement:sushi-mizhou-xuzhou-1077",
+    "eventType": "movement",
+    "label": "由密州迁往徐州",
+    "temporalExtentSid": "time:1077-year",
+    "placeSid": "place:xuzhou",
+    "parentEventSid": null,
+    "status": "verified",
+    "sequence": 51,
+    "description": "苏辙墓志明确记“自密徙徐”；路线为地点间示意线。"
+  },
+  {
+    "sid": "event:appointment:sushi-xuzhou-1077",
+    "eventType": "appointment",
+    "label": "徙知徐州",
+    "temporalExtentSid": "time:1077-year",
+    "placeSid": "place:xuzhou",
+    "parentEventSid": null,
+    "status": "verified",
+    "sequence": 50,
+    "description": "调任徐州的任命动作；实际履职由独立任职阶段记录。"
+  },
+  {
+    "sid": "event:xuzhou-flood-1077",
+    "eventType": "disaster",
+    "label": "徐州洪水",
+    "temporalExtentSid": "time:1077-year",
+    "placeSid": "place:xuzhou",
+    "parentEventSid": null,
+    "status": "verified",
+    "sequence": 60,
+    "description": "河决曹村后洪水汇于徐州城下、威胁城防的灾害过程。"
+  },
+  {
+    "sid": "event:xuzhou-flood-response-1077",
+    "eventType": "disaster-response",
+    "label": "苏轼组织徐州防洪",
+    "temporalExtentSid": "time:1077-year",
+    "placeSid": "place:xuzhou",
+    "parentEventSid": null,
+    "status": "verified",
+    "sequence": 61,
+    "description": "苏轼稳定居民、请求武卫营协力、筑堤并分堵守城的治理响应。"
+  },
+  {
+    "sid": "event:movement:sushi-xuzhou-huzhou-1079",
+    "eventType": "movement",
+    "label": "由徐州迁往湖州",
+    "temporalExtentSid": "time:1079-year",
+    "placeSid": "place:huzhou",
+    "parentEventSid": null,
+    "status": "verified",
+    "sequence": 71,
+    "description": "依据徐州任职后“徙知湖州”及年谱顺序整理的地点变化；路线为示意。"
+  },
+  {
+    "sid": "event:appointment:sushi-huzhou-1079",
+    "eventType": "appointment",
+    "label": "徙知湖州",
+    "temporalExtentSid": "time:1079-year",
+    "placeSid": "place:huzhou",
+    "parentEventSid": null,
+    "status": "verified",
+    "sequence": 70,
+    "description": "调任湖州的任命动作；到任和任期另由任职阶段表示。"
+  },
+  {
+    "sid": "event:wutai-1079",
+    "eventType": "political",
+    "label": "乌台诗案",
+    "temporalExtentSid": "time:1079-year",
+    "placeSid": "place:kaifeng",
+    "parentEventSid": null,
+    "status": "verified",
+    "sequence": 80,
+    "description": "因湖州谢表及诗文被解释为讪谤而引发的弹劾、逮捕、台狱审讯与处分复合事件。"
+  },
+  {
+    "sid": "event:wutai-arrest-1079",
+    "eventType": "political",
+    "label": "逮赴台狱",
+    "temporalExtentSid": "time:1079-year",
+    "placeSid": "place:huzhou",
+    "parentEventSid": "event:wutai-1079",
+    "status": "verified",
+    "sequence": 81,
+    "description": "朝廷遣官从湖州逮捕苏轼并押赴御史台狱。"
+  },
+  {
+    "sid": "event:wutai-imprisonment-1079",
+    "eventType": "political",
+    "label": "御史台狱审讯",
+    "temporalExtentSid": "time:1079-year",
+    "placeSid": "place:kaifeng",
+    "parentEventSid": "event:wutai-1079",
+    "status": "verified",
+    "sequence": 82,
+    "description": "苏轼在御史台狱中被长期审讯；本轮不虚构具体审讯日期。"
+  },
+  {
+    "sid": "event:appointment:sushi-huangzhou-1079",
+    "eventType": "appointment",
+    "label": "以黄州团练副使、本州安置",
+    "temporalExtentSid": "time:1079-year",
+    "placeSid": "place:huangzhou",
+    "parentEventSid": "event:wutai-1079",
+    "status": "verified",
+    "sequence": 83,
+    "description": "乌台诗案处分动作，拆为官名成分和安置状态，不解释为治理黄州。"
+  },
+  {
+    "sid": "event:movement:sushi-huzhou-huangzhou-1080",
+    "eventType": "movement",
+    "label": "由湖州案发阶段转赴黄州",
+    "temporalExtentSid": "time:1080-year",
+    "placeSid": "place:huangzhou",
+    "parentEventSid": null,
+    "status": "verified",
+    "sequence": 90,
+    "description": "处分后赴黄州并于元丰三年抵达的地点变化；不绘制实际行程路线。"
+  }
+]

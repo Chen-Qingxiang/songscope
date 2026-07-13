@@ -13,6 +13,7 @@ export const temporalExtentSchema = z.object({
   precision: temporalPrecisionSchema,
   certainty: temporalCertaintySchema,
   calendar: z.enum(['gregorian-proleptic', 'chinese-regnal', 'unknown']),
+  conversionMethod: z.string().min(1),
   conversionNote: z.string().min(1)
 }).superRefine((value, ctx) => {
   if (value.normalizedStart && value.normalizedEnd && value.normalizedStart > value.normalizedEnd) {

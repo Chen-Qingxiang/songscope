@@ -1,0 +1,38 @@
+[
+  {
+    "subjectEventSid": "event:xuzhou-flood-response-1077",
+    "relationType": "responded-to",
+    "objectEventSid": "event:xuzhou-flood-1077",
+    "note": "《宋史》与苏辙墓志均将组织筑堤守城叙为对洪水威胁的响应。"
+  },
+  {
+    "subjectEventSid": "event:wutai-arrest-1079",
+    "relationType": "part-of",
+    "objectEventSid": "event:wutai-1079",
+    "note": "逮赴台狱属于乌台诗案复合事件。"
+  },
+  {
+    "subjectEventSid": "event:wutai-imprisonment-1079",
+    "relationType": "part-of",
+    "objectEventSid": "event:wutai-1079",
+    "note": "台狱审讯属于乌台诗案复合事件。"
+  },
+  {
+    "subjectEventSid": "event:appointment:sushi-huangzhou-1079",
+    "relationType": "part-of",
+    "objectEventSid": "event:wutai-1079",
+    "note": "黄州处分是乌台诗案的处分子事件。"
+  },
+  {
+    "subjectEventSid": "event:wutai-1079",
+    "relationType": "resulted-in",
+    "objectEventSid": "event:appointment:sushi-huangzhou-1079",
+    "note": "两条 primary source 均把黄州安置记作台狱审讯后的处分结果。"
+  },
+  {
+    "subjectEventSid": "event:movement:sushi-huzhou-huangzhou-1080",
+    "relationType": "followed",
+    "objectEventSid": "event:appointment:sushi-huangzhou-1079",
+    "note": "赴黄州发生在元丰二年处分之后，年谱记元丰三年抵达。"
+  }
+]

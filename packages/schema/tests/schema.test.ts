@@ -11,7 +11,8 @@ describe('SongScope schema invariants', () => {
     const parsed = temporalExtentSchema.parse({
       sid: 'time:1074', originalText: '熙宁七年', normalizedStart: '1074-01-01',
       normalizedEnd: '1074-12-31', precision: 'year', certainty: 'inferred',
-      calendar: 'chinese-regnal', conversionNote: 'Only the year is normalized.'
+      calendar: 'chinese-regnal', conversionMethod: 'regnal-year-table',
+      conversionNote: 'Only the year is normalized.'
     })
     expect(parsed.originalText).toBe('熙宁七年')
   })

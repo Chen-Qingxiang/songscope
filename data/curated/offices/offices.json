@@ -1,0 +1,26 @@
+[
+  {
+    "sid": "office:tongpan",
+    "label": "通判",
+    "category": "duty-assignment",
+    "description": "州郡佐贰差遣；本数据集不把它与寄禄官或其他职名合并。"
+  },
+  {
+    "sid": "office:zhizhou",
+    "label": "知州",
+    "category": "duty-assignment",
+    "description": "主持一州政务的差遣概念；具体记录保留“知密州”等原文及任所。"
+  },
+  {
+    "sid": "office:huangzhou-tuanlian-fushi",
+    "label": "黄州团练副使",
+    "category": "honorific",
+    "description": "乌台诗案后处分中的官名成分；本数据集明确标记为非治理黄州的实际差遣。"
+  },
+  {
+    "sid": "office:anzhi",
+    "label": "本州安置",
+    "category": "status",
+    "description": "处分身份成分，与官名和实际居住状态分开保存。"
+  }
+]

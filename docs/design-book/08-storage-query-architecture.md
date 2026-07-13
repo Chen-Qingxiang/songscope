@@ -162,3 +162,7 @@ projection_version
 - importer golden tests；
 - 关键研究查询快照；
 - 前端证据追溯端到端测试。
+
+## 8.11 v0.2 curated data 契约
+
+v0.2 将 `data/curated/` 中按类型拆分的人类可读 JSON 作为首批种子史料的主要维护入口。共享 schema 在写入前校验单文件字段和跨文件引用；导入器在单事务内确定性重建 PostgreSQL 事实层，并记录 dataset version、schema version 与内容哈希。手写 SQL migration 继续定义约束，但生成或历史遗留 seed SQL 不再是正式史料的唯一来源。

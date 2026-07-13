@@ -1,0 +1,42 @@
+[
+  {
+    "sid": "person:sushi",
+    "primaryName": "苏轼",
+    "traditionalName": "蘇軾",
+    "birthYear": 1037,
+    "deathYear": 1101,
+    "summary": "北宋官员、文学家；本数据集以其杭州至黄州阶段验证仕宦、事件与证据模型。"
+  },
+  {
+    "sid": "person:li-ding",
+    "primaryName": "李定",
+    "traditionalName": "李定",
+    "birthYear": null,
+    "deathYear": null,
+    "summary": "《宋史》卷338记为摘取苏轼表语、诗句并参与弹劾的御史之一。"
+  },
+  {
+    "sid": "person:shu-dan",
+    "primaryName": "舒亶",
+    "traditionalName": "舒亶",
+    "birthYear": null,
+    "deathYear": null,
+    "summary": "《宋史》卷338记为摘取苏轼表语、诗句并参与弹劾的御史之一。"
+  },
+  {
+    "sid": "person:he-zhengchen",
+    "primaryName": "何正臣",
+    "traditionalName": "何正臣",
+    "birthYear": null,
+    "deathYear": null,
+    "summary": "《宋史》卷338记为摘取苏轼表语、诗句并参与弹劾的御史之一。"
+  },
+  {
+    "sid": "person:song-shenzong",
+    "primaryName": "宋神宗",
+    "traditionalName": "宋神宗",
+    "birthYear": 1048,
+    "deathYear": 1085,
+    "summary": "北宋皇帝赵顼；《宋史》卷338记其在乌台诗案处分中独怜苏轼。"
+  }
+]

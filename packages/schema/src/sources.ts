@@ -5,7 +5,7 @@ export const sourceWorkSchema = z.object({
   sid: sidSchema,
   title: z.string().min(1),
   creator: z.string().min(1),
-  workType: z.enum(['primary-source', 'scholarly-edition', 'database', 'digital-transcription'])
+  workType: z.enum(['primary-source', 'scholarly-edition', 'secondary-scholarship', 'database', 'digital-transcription'])
 })
 
 export const sourceItemSchema = z.object({
