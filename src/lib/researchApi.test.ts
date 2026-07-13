@@ -1,5 +1,21 @@
+import {
+  assertionEvidenceResponseSchema,
+  careerTimelineResponseSchema,
+  eventResponseSchema,
+  personResponseSchema,
+  searchResponseSchema,
+  sourceResponseSchema
+} from '@songscope/schema'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { fetchResearchTimeline } from './researchApi'
+import {
+  getStaticAssertionEvidence,
+  getStaticCareer,
+  getStaticEvent,
+  getStaticPerson,
+  getStaticSource,
+  searchStaticResearchData
+} from './staticResearchData'
 
 afterEach(() => vi.unstubAllGlobals())
 
@@ -32,5 +48,29 @@ describe('research API adapter', () => {
   it('rejects malformed API payloads instead of silently rendering them', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ ...validCareer, datasetVersion: 7 }), { status: 200 })))
     await expect(fetchResearchTimeline()).rejects.toThrow()
+  })
+})
+
+describe('GitHub Pages static research adapter', () => {
+  it('projects the verified curated dataset without a running API', () => {
+    const career = careerTimelineResponseSchema.parse(getStaticCareer('person:sushi'))
+    expect(career.datasetVersion).toBe('2026.07.13-sushi-career.1')
+    expect(career.items.map((item) => item.place?.sid)).toEqual(expect.arrayContaining([
+      'place:hangzhou', 'place:mizhou', 'place:xuzhou', 'place:huzhou', 'place:huangzhou'
+    ]))
+    expect(new Set(career.items.map((item) => item.itemType))).toEqual(new Set([
+      'appointment', 'service', 'movement', 'disaster', 'disaster-response', 'political', 'residence'
+    ]))
+    expect(career.items.length).toBeGreaterThanOrEqual(17)
+    expect(career.items.every((item) => item.evidenceSummary.accepted && item.evidenceSummary.evidenceCount > 0)).toBe(true)
+
+    personResponseSchema.parse(getStaticPerson('person:sushi'))
+    assertionEvidenceResponseSchema.parse(getStaticAssertionEvidence('assertion:sushi-appointed-hangzhou'))
+    const punishment = eventResponseSchema.parse(getStaticEvent('event:appointment:sushi-huangzhou-1079'))
+    expect(punishment.appointment?.components.map((item) => item.officeCategory)).toEqual(['honorific', 'status'])
+    const source = sourceResponseSchema.parse(getStaticSource('source:work:songshi'))
+    expect(source.assertions.length).toBeGreaterThan(10)
+    const search = searchResponseSchema.parse(searchStaticResearchData('黄州'))
+    expect(search.results.length).toBeGreaterThan(0)
   })
 })

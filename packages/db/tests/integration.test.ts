@@ -7,11 +7,13 @@ const run = Boolean(process.env.DATABASE_URL)
 const suite = run ? describe : describe.skip
 
 suite('PostgreSQL/PostGIS SongScope v0.2 dataset', () => {
-  const pool = createPool()
-  const repo = new PostgresSongScopeRepository(pool)
-  afterAll(() => pool.end())
+  let pool: ReturnType<typeof createPool>
+  let repo: PostgresSongScopeRepository
+  afterAll(() => pool?.end())
 
   beforeAll(async () => {
+    pool = createPool()
+    repo = new PostgresSongScopeRepository(pool)
     const missing = await pool.query('SELECT * FROM accepted_assertions_without_support')
     expect(missing.rows).toHaveLength(0)
   })

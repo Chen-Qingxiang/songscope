@@ -2,6 +2,8 @@
 
 SongScope 是一个证据可追溯、可统计、可校勘的宋史数字研究平台。v0.2 以苏轼为首个可本地使用的纵向样本，正式数据覆盖杭州、密州、徐州、湖州、黄州连续仕宦，以及徐州洪水、乌台诗案和黄州安置。
 
+在线只读版可直接打开：<https://chen-qingxiang.github.io/songscope/>。GitHub Pages 构建会内置 `data/curated/` 的 verified 数据快照，因此浏览地图、时间轴、搜索和证据链不需要在本地运行 Node.js、PostgreSQL 或 `npm run dev`。
+
 项目规范见 [`docs/design-book/README.md`](docs/design-book/README.md)，本轮架构判断见 [`docs/implementation-v0.2.md`](docs/implementation-v0.2.md)。
 
 ## 一条命令启动
