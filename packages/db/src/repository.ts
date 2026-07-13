@@ -93,9 +93,17 @@ export class PostgresSongScopeRepository implements SongScopeRepository {
         JOIN temporal_extent te ON te.sid = e.temporal_extent_sid
         LEFT JOIN place p ON p.sid = e.place_sid
         JOIN assertion a ON a.subject_sid = e.sid AND a.status = 'accepted'
-        JOIN event_participation ep ON ep.event_sid = e.sid AND ep.entity_sid = $1
         WHERE e.event_type IN ('movement','political','disaster','disaster-response')
           AND e.parent_event_sid IS NULL
+          AND (
+            EXISTS (SELECT 1 FROM event_participation ep WHERE ep.event_sid=e.sid AND ep.entity_sid=$1)
+            OR EXISTS (
+              SELECT 1 FROM event_relation er
+              JOIN event_participation response_participation
+                ON response_participation.event_sid=er.subject_event_sid AND response_participation.entity_sid=$1
+              WHERE er.object_event_sid=e.sid AND er.relation_type='responded-to'
+            )
+          )
       )
       SELECT base.*, count(el.locator_sid)::int AS "evidenceCount",
         array_agg(DISTINCT sw.title) FILTER (WHERE sw.title IS NOT NULL) AS "sourceTitles",
