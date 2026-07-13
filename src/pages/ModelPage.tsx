@@ -18,7 +18,7 @@ export function ModelPage() {
         {entities.map((entity, index) => <article className="entity-card" key={entity.name}><span>{String(index + 1).padStart(2, '0')}</span><p className="eyebrow">{entity.name}</p><h2>{entity.zh}</h2><p>{entity.fields}</p></article>)}
       </section>
       <section className="panel provenance-panel">
-        <header className="panel-header"><div><p className="eyebrow">Provenance</p><h2>史料与证据链</h2></div></header>
+        <header className="panel-header"><div><p className="eyebrow">Prototype source catalogue</p><h2>旧版来源目录示意</h2></div><span className="panel-note">正式来源请从时间轴证据抽屉查看</span></header>
         <div className="source-list">
           {sources.map((source) => <article key={source.id}><div><span className={`source-type ${source.type}`}>{source.type}</span><h3>{source.title}</h3></div><p>{source.note}</p>{source.url && <a href={source.url} target="_blank" rel="noreferrer">打开来源 ↗</a>}</article>)}
         </div>

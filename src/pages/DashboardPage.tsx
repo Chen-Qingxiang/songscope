@@ -10,7 +10,7 @@ export function DashboardPage({ onNavigate }: { onNavigate: (page: string) => vo
     <div className="page-stack">
       <section className="hero-panel">
         <div>
-          <p className="eyebrow">宋史可视化数据平台 · MVP 0.1</p>
+          <p className="eyebrow">宋史数字研究平台 · v0.2</p>
           <h1>从史料，到可计算的宋代</h1>
           <p className="hero-copy">以人物、时间、地点、制度与事件为骨架，把年谱、官制、历史地图和社会网络连接在同一个可追溯的数据层上。</p>
           <div className="hero-actions">
@@ -31,7 +31,7 @@ export function DashboardPage({ onNavigate }: { onNavigate: (page: string) => vo
 
       <section className="two-column-grid">
         <article className="panel chart-panel">
-          <header className="panel-header"><div><p className="eyebrow">数据概览</p><h2>当前记录构成</h2></div><span className="panel-note">演示集</span></header>
+          <header className="panel-header"><div><p className="eyebrow">Prototype overview</p><h2>原型扩展记录构成</h2></div><span className="panel-note">非正式统计</span></header>
           <div className="bar-chart" aria-label="当前记录构成柱状图">
             {chartData.map((item) => {
               const max = Math.max(...chartData.map((entry) => entry.count))

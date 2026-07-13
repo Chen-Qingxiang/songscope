@@ -1,15 +1,30 @@
 import { useEffect, useMemo, useState } from 'react'
 import { BookOpenText } from 'lucide-react'
-import { appointments, events } from '../data/songData'
-import { personById, placeById, primaryName } from '../lib/data'
-import { fetchAssertionEvidence, fetchResearchTimeline } from '../lib/researchApi'
-import type { AssertionEvidenceResponse, ResearchTimelineResponse } from '../lib/researchApi'
+import { fetchAssertionEvidence, fetchEvent, fetchResearchTimeline } from '../lib/researchApi'
+import type { AssertionEvidenceResponse, EventResponse, ResearchTimelineItem, ResearchTimelineResponse } from '../lib/researchApi'
 import type { EventKind } from '../types'
 import { EvidenceDrawer } from './EvidenceDrawer'
 import '../evidence.css'
 
 const kindLabel: Record<EventKind | 'appointment', string> = {
-  appointment: '除授', politics: '政治', disaster: '灾害', travel: '迁徙', literature: '文学', life: '生平'
+  appointment: '除授 / 状态', politics: '政治', disaster: '灾害与治理', travel: '迁徙', literature: '文学', life: '生平'
+}
+
+const itemTypeLabel: Record<ResearchTimelineItem['itemType'], string> = {
+  appointment: '任命动作',
+  service: '实际任职',
+  movement: '迁徙',
+  political: '政治事件',
+  disaster: '灾害事件',
+  'disaster-response': '治理响应',
+  residence: '居住状态'
+}
+
+function filterKind(itemType: ResearchTimelineItem['itemType']): EventKind | 'appointment' {
+  if (itemType === 'movement') return 'travel'
+  if (itemType === 'political') return 'politics'
+  if (itemType === 'disaster' || itemType === 'disaster-response') return 'disaster'
+  return 'appointment'
 }
 
 interface EventTimelineProps {
@@ -18,107 +33,85 @@ interface EventTimelineProps {
   compact?: boolean
 }
 
-interface TimelineItem {
-  id: string
-  year: number
-  yearLabel?: string
-  kind: EventKind | 'appointment'
-  title: string
-  summary: string
-  placeId?: string
-  placeName?: string
-  people: string[]
-  precision?: string
-  uncertainty?: string
-  assertionSid?: string
-  evidenceCount?: number
-  itemType?: 'appointment' | 'service'
-}
-
 export function EventTimeline({ selectedKinds, personId = 'su-shi', compact = false }: EventTimelineProps) {
   const [research, setResearch] = useState<ResearchTimelineResponse | null>(null)
+  const [loading, setLoading] = useState(true)
   const [apiError, setApiError] = useState<string | null>(null)
   const [evidence, setEvidence] = useState<AssertionEvidenceResponse | null>(null)
+  const [eventDetails, setEventDetails] = useState<EventResponse | null>(null)
   const [evidenceLoading, setEvidenceLoading] = useState(false)
   const [evidenceError, setEvidenceError] = useState<string | null>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   useEffect(() => {
-    if (personId !== 'su-shi') return
+    if (personId !== 'su-shi') {
+      setApiError('该人物仍属于 prototype，尚未进入 v0.2 verified dataset。')
+      setLoading(false)
+      return
+    }
+    setLoading(true)
     fetchResearchTimeline('person:sushi')
       .then((result) => { setResearch(result); setApiError(null) })
-      .catch(() => setApiError('研究 API 未连接，当前仍显示原型数据。运行数据库与 API 后可查看完整证据链。'))
+      .catch((error: unknown) => setApiError(`无法读取正式数据：${error instanceof Error ? error.message : '未知错误'}。请运行 npm run dev:all。`))
+      .finally(() => setLoading(false))
   }, [personId])
 
-  async function openEvidence(assertionSid: string) {
+  async function openEvidence(item: ResearchTimelineItem) {
     setDrawerOpen(true)
     setEvidence(null)
+    setEventDetails(null)
     setEvidenceError(null)
     setEvidenceLoading(true)
-    try { setEvidence(await fetchAssertionEvidence(assertionSid)) }
-    catch { setEvidenceError('无法读取证据；请确认 SongScope API 正在运行。') }
-    finally { setEvidenceLoading(false) }
+    try {
+      const [evidenceResult, eventResult] = await Promise.all([
+        fetchAssertionEvidence(item.evidenceSummary.assertionSid),
+        item.id.startsWith('event:') ? fetchEvent(item.id).catch(() => null) : Promise.resolve(null)
+      ])
+      setEvidence(evidenceResult)
+      setEventDetails(eventResult)
+    } catch (error) {
+      setEvidenceError(`无法读取证据：${error instanceof Error ? error.message : '未知错误'}。`)
+    } finally {
+      setEvidenceLoading(false)
+    }
   }
 
-  const merged = useMemo<TimelineItem[]>(() => {
-    const demoAppointments = appointments
-      .filter((appointment) => appointment.personId === personId)
-      .filter((appointment) => !(research && appointment.id === 'appt-1074-mizhou'))
-      .map((appointment) => ({
-        id: appointment.id, year: appointment.startYear, kind: 'appointment' as const,
-        title: `${appointment.action}：${appointment.duty}`, summary: appointment.summary,
-        placeId: appointment.placeId, people: [appointment.personId]
-      }))
-
-    const researchItems: TimelineItem[] = (research?.items ?? []).map((item) => ({
-      id: item.id, year: item.year, yearLabel: item.yearLabel, kind: 'appointment',
-      title: item.title, summary: item.summary, placeName: item.place?.name,
-      people: [personId], precision: item.precision, uncertainty: item.uncertainty,
-      assertionSid: item.evidenceSummary.assertionSid,
-      evidenceCount: item.evidenceSummary.evidenceCount, itemType: item.itemType
-    }))
-
-    return [
-      ...events.filter((event) => event.personIds.includes(personId)).map((event) => ({
-        id: event.id, year: event.year, kind: event.kind as EventKind | 'appointment',
-        title: event.title, summary: event.summary, placeId: event.placeId, people: event.personIds
-      })),
-      ...demoAppointments,
-      ...researchItems
-    ].filter((item) => !selectedKinds || selectedKinds.has(item.kind)).sort((a, b) => a.year - b.year || a.id.localeCompare(b.id))
-  }, [personId, research, selectedKinds])
-
-  const visible = compact ? merged.slice(-7) : merged
+  const visible = useMemo(() => {
+    const items = (research?.items ?? []).filter((item) => !selectedKinds || selectedKinds.has(filterKind(item.itemType)))
+    return compact ? items.slice(-7) : items
+  }, [research, selectedKinds, compact])
 
   return (
     <div className="timeline-research-shell">
       <div className="timeline-main">
-        {!compact && research && <div className="research-data-banner"><span>真实种子集</span><strong>{research.datasetVersion}</strong><p>密州除授记录来自数据库投影；任命动作与实际任职阶段分开显示。</p></div>}
-        {!compact && apiError && <div className="research-data-banner fallback"><span>Fallback</span><p>{apiError}</p></div>}
-        <div className="timeline">
-          {visible.map((item) => (
-            <article className={`timeline-item ${item.assertionSid ? 'evidence-backed' : ''}`} key={item.id}>
-              <div className="timeline-year">{item.yearLabel ?? item.year}</div>
-              <div className={`timeline-dot kind-${item.kind}`} />
-              <div className="timeline-content">
-                <div className="timeline-meta">
-                  <span className={`kind-pill kind-${item.kind}`}>{item.itemType === 'service' ? '任职阶段' : kindLabel[item.kind]}</span>
-                  {(item.placeName || item.placeId) && <span>{item.placeName ?? placeById.get(item.placeId!)?.name}</span>}
-                  {item.precision && <span>精度：{item.precision}</span>}
-                  {item.uncertainty && <span>性质：{item.uncertainty}</span>}
+        {!compact && research && <div className="research-data-banner"><span>Verified dataset</span><strong>{research.datasetVersion}</strong><p>杭州—密州—徐州—湖州—黄州均来自 PostgreSQL 投影；任命、任职、迁徙、事件与居住状态分别显示。</p></div>}
+        {loading && <div className="empty-state">正在加载苏轼正式仕宦数据……</div>}
+        {apiError && <div className="research-data-banner fallback"><span>API error</span><p>{apiError}</p></div>}
+        {!loading && !apiError && <div className="timeline">
+          {visible.map((item) => {
+            const kind = filterKind(item.itemType)
+            return (
+              <article className={`timeline-item evidence-backed item-${item.itemType}`} key={item.id}>
+                <div className="timeline-year">{item.yearLabel}</div>
+                <div className={`timeline-dot kind-${kind}`} />
+                <div className="timeline-content">
+                  <div className="timeline-meta">
+                    <span className={`kind-pill kind-${kind}`}>{itemTypeLabel[item.itemType]}</span>
+                    {item.place && <span>{item.place.name}</span>}
+                    <span>精度：{item.precision}</span>
+                    <span>性质：{item.uncertainty}</span>
+                  </div>
+                  <h3>{item.title}</h3>
+                  <p>{item.summary}</p>
+                  <button className="evidence-button" onClick={() => openEvidence(item)}><BookOpenText size={14} />查看证据（{item.evidenceSummary.evidenceCount}）</button>
                 </div>
-                <h3>{item.title}</h3>
-                <p>{item.summary}</p>
-                {item.assertionSid && !compact && <button className="evidence-button" onClick={() => openEvidence(item.assertionSid!)}><BookOpenText size={14} />查看证据（{item.evidenceCount}）</button>}
-                {!compact && item.people.length > 1 && <div className="people-row">涉及：{item.people.map(primaryName).join('、')}</div>}
-              </div>
-            </article>
-          ))}
-          {visible.length === 0 && <div className="empty-state">当前筛选条件下没有事件。</div>}
-          <span className="sr-only">当前人物：{personById.get(personId)?.names[0].text}</span>
-        </div>
+              </article>
+            )
+          })}
+          {visible.length === 0 && <div className="empty-state">当前筛选条件下没有正式记录。</div>}
+        </div>}
       </div>
-      {drawerOpen && <EvidenceDrawer data={evidence} loading={evidenceLoading} error={evidenceError} onClose={() => setDrawerOpen(false)} />}
+      {drawerOpen && <EvidenceDrawer data={evidence} event={eventDetails} loading={evidenceLoading} error={evidenceError} onClose={() => setDrawerOpen(false)} />}
     </div>
   )
 }

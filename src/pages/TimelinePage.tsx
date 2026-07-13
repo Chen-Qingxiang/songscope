@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { EventTimeline } from '../components/EventTimeline'
+import { fetchPerson, type PersonResponse } from '../lib/researchApi'
 import type { EventKind } from '../types'
 
 const filters: Array<{ value: EventKind | 'appointment'; label: string }> = [
@@ -13,6 +14,12 @@ const filters: Array<{ value: EventKind | 'appointment'; label: string }> = [
 
 export function TimelinePage() {
   const [selectedKinds, setSelectedKinds] = useState(new Set(filters.map((filter) => filter.value)))
+  const [person, setPerson] = useState<PersonResponse | null>(null)
+  const [personError, setPersonError] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetchPerson().then(setPerson).catch((error: unknown) => setPersonError(error instanceof Error ? error.message : '无法读取人物'))
+  }, [])
   function toggle(value: EventKind | 'appointment') {
     const next = new Set(selectedKinds)
     if (next.has(value)) next.delete(value)
@@ -22,7 +29,7 @@ export function TimelinePage() {
 
   return (
     <div className="page-stack">
-      <header className="page-heading"><div><p className="eyebrow">Chronology</p><h1>人物生涯时间轴</h1><p>把除授、迁徙、政治事件、灾害与作品放在同一条可筛选的时间线上。</p></div><div className="person-chip"><span>当前人物</span><strong>苏轼 · 1037–1101</strong></div></header>
+      <header className="page-heading"><div><p className="eyebrow">Verified biography</p><h1>{person?.name ?? '苏轼'}仕宦研究页</h1><p>{person?.summary ?? (personError ? `人物 API 错误：${personError}` : '正在读取人物概要……')}</p></div><div className="person-chip"><span>当前人物</span><strong>{person ? `${person.name} · ${person.birthYear}–${person.deathYear}` : 'person:sushi'}</strong><small>{person?.datasetVersion}</small></div></header>
       <section className="filter-bar">
         {filters.map((filter) => <button key={filter.value} className={selectedKinds.has(filter.value) ? 'active' : ''} onClick={() => toggle(filter.value)}><span className={`filter-dot kind-${filter.value}`} />{filter.label}</button>)}
       </section>

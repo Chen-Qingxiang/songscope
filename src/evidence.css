@@ -7,6 +7,12 @@
 .research-data-banner.fallback { grid-template-columns: auto 1fr; border-color: rgba(201,167,101,.25); background: var(--gold-soft); }
 .research-data-banner.fallback span { color: var(--gold); }
 .timeline-item.evidence-backed .timeline-content { border: 1px solid rgba(108,154,137,.24); border-radius: 12px; padding: 14px 16px 16px; margin: -12px 0 20px 4px; background: rgba(108,154,137,.035); }
+.timeline-item.item-appointment .timeline-content { border-left: 3px solid var(--gold); }
+.timeline-item.item-service .timeline-content { border-left: 3px solid var(--jade); }
+.timeline-item.item-residence .timeline-content { border-left: 3px solid #8097b8; }
+.timeline-item.item-movement .timeline-content { border-left: 3px dashed #a78a69; }
+.timeline-item.item-political .timeline-content { border-left: 3px solid #a76565; }
+.timeline-item.item-disaster .timeline-content, .timeline-item.item-disaster-response .timeline-content { border-left: 3px solid #b88954; }
 .evidence-button { display: inline-flex; align-items: center; gap: 7px; margin-top: 12px; padding: 7px 10px; border: 1px solid rgba(108,154,137,.35); background: rgba(108,154,137,.08); color: #9fc1b4; border-radius: 8px; cursor: pointer; font-size: 11px; }
 .evidence-button:hover { border-color: var(--jade); color: #c8e0d7; }
 .evidence-drawer { position: sticky; top: 98px; max-height: calc(100vh - 125px); overflow: auto; border: 1px solid var(--line); background: #171610; border-radius: 15px; padding: 20px; box-shadow: 0 20px 60px rgba(0,0,0,.25); }
