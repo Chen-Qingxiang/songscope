@@ -1,0 +1,18 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_DB: songscope
+      POSTGRES_USER: songscope
+      POSTGRES_PASSWORD: songscope
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U songscope -d songscope"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - songscope_pgdata:/var/lib/postgresql/data
+volumes:
+  songscope_pgdata:
