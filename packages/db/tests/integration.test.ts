@@ -180,6 +180,23 @@ suite('PostgreSQL/PostGIS SongScope v0.3 dataset', () => {
     expect(brokenEvidence.rows).toHaveLength(0)
   })
 
+  it('rejects a source unit whose carrier is not a member of its corpus snapshot', async () => {
+    const snapshot = await pool.query('SELECT sid FROM corpus_snapshot LIMIT 1')
+    await pool.query('BEGIN')
+    try {
+      await pool.query(`INSERT INTO entity_registry(sid,entity_type,label)
+        VALUES ('source:unit:test-foreign-carrier','source_unit','invalid carrier')`)
+      await expect(pool.query(`INSERT INTO source_unit(
+        sid,snapshot_sid,source_item_sid,parent_unit_sid,unit_type,division,juan,
+        label_original,label_normalized,sequence_index,external_anchor)
+        VALUES ($1,$2,'source:item:songshi-338-wikisource',NULL,'chapter','appendix',NULL,
+          'invalid','invalid',999,NULL)`, ['source:unit:test-foreign-carrier', snapshot.rows[0].sid]))
+        .rejects.toThrow(/source_unit_snapshot_item_fk/)
+    } finally {
+      await pool.query('ROLLBACK')
+    }
+  })
+
   it('keeps generated annotations candidate-only and enforces exact passage spans', async () => {
     const statuses = await pool.query('SELECT status,count(*)::int AS count FROM text_annotation GROUP BY status')
     expect(statuses.rows).toEqual([{ status: 'candidate', count: 1340 }])

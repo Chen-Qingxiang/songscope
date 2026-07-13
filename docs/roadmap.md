@@ -14,23 +14,23 @@
 
 这些成果保留，但旧总览、人物网络和 prototype 统计不再作为下一阶段扩展基础。
 
-## Phase 1 — v0.3 《宋史》语料骨架与纪事索引（当前）
+## Phase 1 — v0.3 《宋史》语料骨架与纪事索引（已完成）
 
 规范：[`design-book/11-corpus-first-product.md`](design-book/11-corpus-first-product.md)
 
 实施：[`implementation-v0.3.md`](implementation-v0.3.md)
 
-- [ ] 固定中文维基文库《宋史》目录和逐卷 revision；
-- [ ] 建立篇类、卷、passage、文本标注和覆盖报告模型；
-- [ ] 将网络 acquisition 与离线 validation/import 分离；
-- [ ] 导入并检索目录中实际可取得的卷页，明确报告缺失；
-- [ ] 完成卷十四至卷十六神宗本纪的连续 passage 和候选标注切片；
-- [ ] 将卷338现有证据 locator 迁移或映射到 passage；
-- [ ] 建立史料、检索、纪事、实体、研究查询和数据版本主流程；
-- [ ] 移除正式运行路径对 prototype 数据的依赖；
-- [ ] 保持空库重建、重复导入、API 和静态部署确定一致。
+- [x] 固定中文维基文库《宋史》目录和逐卷 revision；
+- [x] 建立篇类、卷、passage、文本标注和覆盖报告模型；
+- [x] 将网络 acquisition 与离线 validation/import 分离；
+- [x] 导入并检索目录中实际可取得的卷页，明确报告缺失；
+- [x] 完成卷十四至卷十六神宗本纪的连续 passage 和候选标注切片；
+- [x] 将卷338现有证据 locator 迁移或映射到 passage；
+- [x] 建立史料、检索、纪事、实体、研究查询和数据版本主流程；
+- [x] 移除正式运行路径对 prototype 数据的依赖；
+- [x] 保持空库重建、重复导入、API 和静态部署确定一致。
 
-## Phase 2 — 人工审核、纪传对读与通用查询
+## Phase 2 — 人工审核、纪传对读与通用查询（下一阶段）
 
 - 神宗本纪候选实体、时间、除授和事件的人工审核工作流；
 - 本纪与列传、志、表之间的 passage 对齐；

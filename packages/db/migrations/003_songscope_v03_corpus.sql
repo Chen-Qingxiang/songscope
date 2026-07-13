@@ -95,6 +95,15 @@ CREATE TABLE IF NOT EXISTS source_passage (
   FOREIGN KEY (source_unit_sid, snapshot_sid) REFERENCES source_unit(sid, snapshot_sid)
 );
 
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'source_unit_snapshot_item_fk') THEN
+    ALTER TABLE source_unit ADD CONSTRAINT source_unit_snapshot_item_fk
+      FOREIGN KEY (snapshot_sid, source_item_sid)
+      REFERENCES corpus_snapshot_item(snapshot_sid, source_item_sid);
+  END IF;
+END $$;
+
 CREATE TABLE IF NOT EXISTS source_locator_passage (
   locator_sid text NOT NULL REFERENCES source_locator(sid) ON DELETE CASCADE,
   passage_sid text NOT NULL REFERENCES source_passage(sid) ON DELETE RESTRICT,
