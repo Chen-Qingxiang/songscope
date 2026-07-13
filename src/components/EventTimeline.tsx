@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { BookOpenText } from 'lucide-react'
-import { fetchAssertionEvidence, fetchEvent, fetchResearchTimeline } from '../lib/researchApi'
+import { fetchAssertionEvidence, fetchEvent, fetchResearchTimeline, researchDataMode } from '../lib/researchApi'
 import type { AssertionEvidenceResponse, EventResponse, ResearchTimelineItem, ResearchTimelineResponse } from '../lib/researchApi'
 import type { EventKind } from '../types'
 import { EvidenceDrawer } from './EvidenceDrawer'
@@ -84,7 +84,7 @@ export function EventTimeline({ selectedKinds, personId = 'su-shi', compact = fa
   return (
     <div className="timeline-research-shell">
       <div className="timeline-main">
-        {!compact && research && <div className="research-data-banner"><span>Verified dataset</span><strong>{research.datasetVersion}</strong><p>杭州—密州—徐州—湖州—黄州均来自 PostgreSQL 投影；任命、任职、迁徙、事件与居住状态分别显示。</p></div>}
+        {!compact && research && <div className="research-data-banner"><span>Verified dataset</span><strong>{research.datasetVersion}</strong><p>杭州—密州—徐州—湖州—黄州均来自{researchDataMode === 'static' ? '内置正式数据快照' : ' PostgreSQL 投影'}；任命、任职、迁徙、事件与居住状态分别显示。</p></div>}
         {loading && <div className="empty-state">正在加载苏轼正式仕宦数据……</div>}
         {apiError && <div className="research-data-banner fallback"><span>API error</span><p>{apiError}</p></div>}
         {!loading && !apiError && <div className="timeline">
