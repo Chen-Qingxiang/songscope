@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "0.3.0",
+  "corpusVersion": "songshi-wikisource-r2535238-f3b6041f6161",
+  "snapshotSid": "corpus:snapshot:songshi-wikisource:f3b6041f6161819b",
+  "expected": 496,
+  "discovered": 496,
+  "acquired": 496,
+  "validated": 496,
+  "segmented": 496,
+  "searchable": 496,
+  "reviewed": 0,
+  "candidateAnnotations": 1340,
+  "anomalies": []
+}

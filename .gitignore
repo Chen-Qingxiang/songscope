@@ -1,5 +1,6 @@
 node_modules
 dist
+public/corpus
 .vite
 coverage
 *.local

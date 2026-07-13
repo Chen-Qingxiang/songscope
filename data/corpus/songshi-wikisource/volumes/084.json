@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "0.3.0",
+  "sourceItem": {
+    "sid": "source:item:songshi-wikisource:juan084:r1476658",
+    "workSid": "source:work:songshi",
+    "provider": "Chinese Wikisource",
+    "pageTitle": "宋史/卷084",
+    "pageId": 179218,
+    "revisionId": 1476658,
+    "revisionTimestamp": "2018-06-04T14:29:50Z",
+    "canonicalUrl": "https://zh.wikisource.org/wiki/%E5%AE%8B%E5%8F%B2/%E5%8D%B7084",
+    "historyUrl": "https://zh.wikisource.org/w/index.php?title=%E5%AE%8B%E5%8F%B2%2F%E5%8D%B7084&action=history",
+    "attributionUrl": "https://zh.wikisource.org/w/index.php?title=%E5%AE%8B%E5%8F%B2%2F%E5%8D%B7084&action=history",
+    "contentModel": "wikitext",
+    "license": {
+      "spdxId": "CC-BY-SA-4.0",
+      "name": "Creative Commons Attribution-Share Alike 4.0",
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/deed.zh",
+      "attributionRequired": true
+    },
+    "retrievedAt": "2026-07-13T10:48:04.928Z",
+    "sourceTextChecksum": "deac60dfd41d633fc2bec6a260cb4efaa5b8bb568e0cf0fe1078b18be1a68063",
+    "sourceTextBytes": 555
+  },
+  "unit": {
+    "sid": "source:unit:songshi-wikisource:juan084:r1476658",
+    "sourceItemSid": "source:item:songshi-wikisource:juan084:r1476658",
+    "parentUnitSid": "source:unit:songshi-wikisource:index:r2535238:zhi",
+    "unitType": "juan",
+    "division": "zhi",
+    "juan": 84,
+    "labelOriginal": "巻八十四　-{志}-第三十七　律暦十七",
+    "labelNormalized": "卷84",
+    "sequenceIndex": 84,
+    "externalAnchor": null
+  },
+  "sourceText": "{{header2| title = [[../]]| section = '''卷八十四'''<br>志第三十七　律曆十七| previous = [[../卷083|律曆十六]]| next = [[../卷085|地理一]]| theme = 歷史| type = 史書| notes ={{textquality|25%}}}}\n演紀上元甲子歲距，紹熙五年甲寅歲積三千八百三十。至慶元已未歲積三千八百三十五<small>開禧上元甲子至開禧三年丁卯，歲積七百八十四萬八千一百八十三，成天上元甲子距鹹淳七年辛未，歲積七千一百七十五萬八千一百四十七。</small>\n{{元朝作品}}",
+  "passages": [
+    {
+      "sid": "source:passage:songshi-wikisource:juan084:r1476658:00001",
+      "sourceUnitSid": "source:unit:songshi-wikisource:juan084:r1476658",
+      "sequenceIndex": 1,
+      "sourceText": "演紀上元甲子歲距，紹熙五年甲寅歲積三千八百三十。至慶元已未歲積三千八百三十五<small>開禧上元甲子至開禧三年丁卯，歲積七百八十四萬八千一百八十三，成天上元甲子距鹹淳七年辛未，歲積七千一百七十五萬八千一百四十七。</small>\n{{元朝作品}}",
+      "normalizedText": "演紀上元甲子歲距，紹熙五年甲寅歲積三千八百三十。至慶元已未歲積三千八百三十五開禧上元甲子至開禧三年丁卯，歲積七百八十四萬八千一百八十三，成天上元甲子距鹹淳七年辛未，歲積七千一百七十五萬八千一百四十七。",
+      "checksum": "31326f28254017d441e322319dfadf715900a5a9ac433e0da54db437f0a814e5",
+      "segmentationMethod": "wikitext-blocks",
+      "segmentationVersion": "1.0.0",
+      "reviewStatus": "raw"
+    }
+  ],
+  "annotations": []
+}
