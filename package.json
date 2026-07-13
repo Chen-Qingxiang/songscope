@@ -10,14 +10,17 @@
     "dev:all": "tsx scripts/dev-all.ts",
     "build": "tsc -b && vite build",
     "typecheck": "tsc -b --pretty false && tsc -p packages/schema/tsconfig.json --pretty false && tsc -p packages/db/tsconfig.json --pretty false && tsc -p apps/api/tsconfig.json --pretty false",
-    "test": "vitest run src packages/schema/tests packages/db/tests/curated.test.ts apps/api/tests",
+    "test": "vitest run src packages/schema/tests packages/db/tests/curated.test.ts packages/db/tests/corpus.test.ts apps/api/tests",
     "test:db": "vitest run packages/db/tests/integration.test.ts",
+    "corpus:acquire": "tsx packages/db/scripts/acquire-corpus.ts",
+    "corpus:validate": "tsx packages/db/scripts/validate-corpus.ts",
+    "corpus:coverage": "tsx packages/db/scripts/report-corpus-coverage.ts",
     "data:validate": "tsx packages/db/scripts/validate-curated.ts",
     "data:import": "tsx packages/db/scripts/import-curated.ts",
     "db:migrate": "tsx packages/db/scripts/migrate.ts",
     "db:seed": "npm run data:import",
     "db:reset": "npm run db:migrate && npm run data:import",
-    "verify": "npm run data:validate && npm run typecheck && npm test && npm run test:db && npm run build"
+    "verify": "npm run corpus:validate && npm run data:validate && npm run typecheck && npm test && npm run test:db && npm run build"
   },
   "dependencies": {
     "@songscope/schema": "0.1.0",

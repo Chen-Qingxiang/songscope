@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const sidPrefixes = [
   'person', 'place', 'office', 'event', 'service', 'source', 'locator',
-  'assertion', 'time', 'concept', 'curation'
+  'assertion', 'time', 'concept', 'curation', 'corpus'
 ] as const
 
 export type SidPrefix = (typeof sidPrefixes)[number]

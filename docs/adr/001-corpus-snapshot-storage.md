@@ -39,6 +39,8 @@ volumes/001.json ... 496.json
 3. 每卷独立 JSON 便于差异审阅、按卷加载和将来按 revision 生成新快照；
 4. 不新增生产依赖，也不改变当前部署方式。
 
+首次 acquisition 后，包含 raw wikitext、逐段 `sourceText`、可读投影、元数据和标注的完整 JSON 树约 `68 MiB`，单文件均远低于 Git 常见的大文件限制。该体积仍采用本 ADR 的 Git 方案，但后续 snapshot 不得在同一版本中反复复制；新增版本前应重新评估累计仓库体积。
+
 `manifest.json` 的 corpus content hash 由目录 revision、处理规则版本、逐页 revision 与正文 checksum 的规范序列计算，不包含会随运行时间变化的字段。相同上游 revision 的重复 acquisition 必须保留首次 `retrievedAt` 并产生相同内容；上游 revision 变化时不得静默覆盖。
 
 ## 许可边界
