@@ -1,0 +1,79 @@
+[
+  {
+    "sid": "locator:songshi-338-hangzhou-mizhou",
+    "sourceItemSid": "source:item:songshi-338-wikisource",
+    "locatorType": "juan",
+    "locatorValue": "卷338·苏轼传，通判杭州至密州政务段",
+    "quoteText": "軾遂請外，通判杭州。……時新政日下，軾於其間，每因法以便民，民賴以安。徙知密州。"
+  },
+  {
+    "sid": "locator:songshi-338-xuzhou-flood",
+    "sourceItemSid": "source:item:songshi-338-wikisource",
+    "locatorType": "juan",
+    "locatorValue": "卷338·苏轼传，徙知徐州及河决曹村段",
+    "quoteText": "徙知徐州。河決曹村，泛於梁山泊，溢于南清河，匯于城下，漲不時洩，城將敗。……軾詣武衛營，呼卒長曰：……率其徒持畚鍤以出，築東南長堤，……卒全其城。"
+  },
+  {
+    "sid": "locator:songshi-338-huzhou-wutai-huangzhou",
+    "sourceItemSid": "source:item:songshi-338-wikisource",
+    "locatorType": "juan",
+    "locatorValue": "卷338·苏轼传，徙知湖州至黄州安置段",
+    "quoteText": "徙知湖州，上表以謝。……御史李定、舒亶、何正臣摭其表語，並媒蘖所爲詩以爲訕謗，逮赴臺獄，欲置之死，鍛煉久之不決。神宗獨憐之，以黃州團練副使安置。軾與田父野老，相從溪山間，築室於東坡，自號「東坡居士」。"
+  },
+  {
+    "sid": "locator:suzhe-muzhiming-hangzhou-mizhou",
+    "sourceItemSid": "source:item:suzhe-muzhiming-wikisource",
+    "locatorType": "paragraph",
+    "locatorValue": "《栾城集》后集卷22，乞外任至自杭徙知密州段",
+    "quoteText": "乞外任避之，通判杭州。……自杭徙知密州。時方行手實法，……公謂提舉常平官曰：……今出於司農，是擅造律也，若何？"
+  },
+  {
+    "sid": "locator:suzhe-muzhiming-xuzhou-flood",
+    "sourceItemSid": "source:item:suzhe-muzhiming-wikisource",
+    "locatorType": "paragraph",
+    "locatorValue": "《栾城集》后集卷22，自密徙徐及防洪段",
+    "quoteText": "自密徙徐。是歲河決曹村，……滙於城下，漲不時洩，城將敗。……公履屨杖，策親入武衛營，……率其徒短衣徒跣，持畚鍤以出築東南長堤，……卒完城以聞。"
+  },
+  {
+    "sid": "locator:suzhe-muzhiming-huzhou-wutai-huangzhou",
+    "sourceItemSid": "source:item:suzhe-muzhiming-wikisource",
+    "locatorType": "paragraph",
+    "locatorValue": "《栾城集》后集卷22，徙知湖州至黄州安置段",
+    "quoteText": "徙知湖州，以表謝上。言事者擿其語以為謗，遣官逮赴御史獄。……促具獄，以黃州團練副使安置。公幅巾芒屩，與田父野老相從溪谷之間，築室於東坡，自號東坡居士。"
+  },
+  {
+    "sid": "locator:yearbook-1071-hangzhou",
+    "sourceItemSid": "source:item:li-zhengping-sushi-fashu-sample",
+    "locatorType": "page",
+    "locatorValue": "样章第5页，1071（熙宁四年）条",
+    "quoteText": "乞外任避之，除通判杭州。十一月，到杭州任。"
+  },
+  {
+    "sid": "locator:yearbook-1074-mizhou",
+    "sourceItemSid": "source:item:li-zhengping-sushi-fashu-sample",
+    "locatorType": "page",
+    "locatorValue": "样章第5页，1074（熙宁七年）条",
+    "quoteText": "九月，告下，改知密州。十一月到任。"
+  },
+  {
+    "sid": "locator:yearbook-1077-xuzhou",
+    "sourceItemSid": "source:item:li-zhengping-sushi-fashu-sample",
+    "locatorType": "page",
+    "locatorValue": "样章第6页，1077（熙宁十年）条",
+    "quoteText": "二月，改知徐州。……四月，到徐州任。七月，河决澶渊，轼爱民如子，亲率军民防洪抗灾。"
+  },
+  {
+    "sid": "locator:yearbook-1079-huzhou-wutai",
+    "sourceItemSid": "source:item:li-zhengping-sushi-fashu-sample",
+    "locatorType": "page",
+    "locatorValue": "样章第7页，1079（元丰二年）条",
+    "quoteText": "三月，移知湖州，四月到任。……十二月二十九日获释出狱，责授检校水部员外郎黄州团练副使，本州安置，不得签书公事。"
+  },
+  {
+    "sid": "locator:yearbook-1080-1084-huangzhou",
+    "sourceItemSid": "source:item:li-zhengping-sushi-fashu-sample",
+    "locatorType": "page",
+    "locatorValue": "样章第7至10页，1080至1084年条",
+    "quoteText": "1080年二月抵黄州贬所；1084年四月别黄州。"
+  }
+]

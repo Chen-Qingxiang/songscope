@@ -1,60 +1,51 @@
-export interface EvidenceSummary {
-  assertionSid: string
-  accepted: boolean
-  evidenceCount: number
-  sourceTitles: string[]
-  locatorLabels: string[]
-}
+import {
+  assertionEvidenceResponseSchema,
+  careerTimelineResponseSchema,
+  eventResponseSchema,
+  personResponseSchema,
+  searchResponseSchema,
+  sourceResponseSchema,
+  type AssertionEvidenceResponse,
+  type CareerTimelineResponse,
+  type EventResponse,
+  type PersonResponse,
+  type SearchResponse,
+  type SourceResponse
+} from '@songscope/schema'
 
-export interface ResearchTimelineItem {
-  id: string
-  itemType: 'appointment' | 'service'
-  year: number
-  yearLabel: string
-  precision: string
-  uncertainty: string
-  title: string
-  summary: string
-  place: { sid: string; name: string; resolutionStatus: string } | null
-  evidenceSummary: EvidenceSummary
-}
-
-export interface ResearchTimelineResponse {
-  datasetVersion: string
-  person: { sid: string; name: string }
-  items: ResearchTimelineItem[]
-}
-
-export interface AssertionEvidenceResponse {
-  datasetVersion: string
-  assertion: {
-    sid: string
-    subjectSid: string
-    predicate: string
-    status: string
-    confidence: number
-    rationale: string
-  }
-  evidence: Array<{
-    stance: string
-    note: string
-    locator: { sid: string; type: string; value: string; quote: string | null }
-    source: { title: string; item: string; citation: string; url: string | null }
-  }>
-}
+export type ResearchTimelineResponse = CareerTimelineResponse
+export type ResearchTimelineItem = CareerTimelineResponse['items'][number]
+export type { AssertionEvidenceResponse, EventResponse, PersonResponse, SearchResponse, SourceResponse }
 
 const apiBase = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? '/api'
 
-async function getJson<T>(path: string): Promise<T> {
+async function getJson<T>(path: string, schema: { parse(input: unknown): T }): Promise<T> {
   const response = await fetch(`${apiBase}${path}`)
-  if (!response.ok) throw new Error(`SongScope API returned ${response.status}`)
-  return response.json() as Promise<T>
+  const body = await response.json().catch(() => null) as { message?: string } | null
+  if (!response.ok) throw new Error(body?.message ?? `SongScope API returned ${response.status}`)
+  return schema.parse(body)
+}
+
+export function fetchPerson(personSid = 'person:sushi') {
+  return getJson<PersonResponse>(`/people/${encodeURIComponent(personSid)}`, personResponseSchema)
 }
 
 export function fetchResearchTimeline(personSid = 'person:sushi') {
-  return getJson<ResearchTimelineResponse>(`/people/${encodeURIComponent(personSid)}/timeline`)
+  return getJson<ResearchTimelineResponse>(`/people/${encodeURIComponent(personSid)}/career`, careerTimelineResponseSchema)
 }
 
 export function fetchAssertionEvidence(assertionSid: string) {
-  return getJson<AssertionEvidenceResponse>(`/assertions/${encodeURIComponent(assertionSid)}/evidence`)
+  return getJson<AssertionEvidenceResponse>(`/assertions/${encodeURIComponent(assertionSid)}/evidence`, assertionEvidenceResponseSchema)
+}
+
+export function fetchEvent(eventSid: string) {
+  return getJson<EventResponse>(`/events/${encodeURIComponent(eventSid)}`, eventResponseSchema)
+}
+
+export function fetchSource(sourceSid: string) {
+  return getJson<SourceResponse>(`/sources/${encodeURIComponent(sourceSid)}`, sourceResponseSchema)
+}
+
+export function searchResearchData(query: string) {
+  return getJson<SearchResponse>(`/search?q=${encodeURIComponent(query)}`, searchResponseSchema)
 }

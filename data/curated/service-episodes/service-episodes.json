@@ -1,0 +1,62 @@
+[
+  {
+    "sid": "service:sushi-hangzhou-1071",
+    "personSid": "person:sushi",
+    "episodeType": "service",
+    "dutyOfficeSid": "office:tongpan",
+    "placeSid": "place:hangzhou",
+    "temporalExtentSid": "time:1071-1074-range",
+    "derivedFromAppointmentSid": "event:appointment:sushi-hangzhou-1071",
+    "createdByEventSid": null,
+    "status": "attested",
+    "note": "《宋史》与苏辙墓志均叙述苏轼在杭州因法便民，年谱提供到任与改任年份边界。"
+  },
+  {
+    "sid": "service:sushi-mizhou-1074",
+    "personSid": "person:sushi",
+    "episodeType": "service",
+    "dutyOfficeSid": "office:zhizhou",
+    "placeSid": "place:mizhou",
+    "temporalExtentSid": "time:1074-1076-range",
+    "derivedFromAppointmentSid": "event:appointment:sushi-mizhou-1074",
+    "createdByEventSid": null,
+    "status": "attested",
+    "note": "两条 primary source 在任命后连续叙述苏轼处理密州手实法与盗案，支持实际履职；边界按年谱保持年级精度。"
+  },
+  {
+    "sid": "service:sushi-xuzhou-1077",
+    "personSid": "person:sushi",
+    "episodeType": "service",
+    "dutyOfficeSid": "office:zhizhou",
+    "placeSid": "place:xuzhou",
+    "temporalExtentSid": "time:1077-1079-range",
+    "derivedFromAppointmentSid": "event:appointment:sushi-xuzhou-1077",
+    "createdByEventSid": null,
+    "status": "attested",
+    "note": "徐州洪水及防洪叙述直接支持实际履职；任期只按年谱的到任与移知年份界定。"
+  },
+  {
+    "sid": "service:sushi-huzhou-1079",
+    "personSid": "person:sushi",
+    "episodeType": "service",
+    "dutyOfficeSid": "office:zhizhou",
+    "placeSid": "place:huzhou",
+    "temporalExtentSid": "time:1079-year",
+    "derivedFromAppointmentSid": "event:appointment:sushi-huzhou-1079",
+    "createdByEventSid": null,
+    "status": "attested",
+    "note": "年谱明确记元丰二年到湖州任并于同年被逮；本轮不归一到具体月日。"
+  },
+  {
+    "sid": "service:sushi-huangzhou-residence-1080",
+    "personSid": "person:sushi",
+    "episodeType": "residence",
+    "dutyOfficeSid": null,
+    "placeSid": "place:huangzhou",
+    "temporalExtentSid": "time:1080-1084-range",
+    "derivedFromAppointmentSid": "event:appointment:sushi-huangzhou-1079",
+    "createdByEventSid": "event:appointment:sushi-huangzhou-1079",
+    "status": "attested",
+    "note": "黄州实际居住状态与团练副使官名、安置处分分开；两条 primary source 记其在黄州生活，年谱提供抵达和离开年份。"
+  }
+]

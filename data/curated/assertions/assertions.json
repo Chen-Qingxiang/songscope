@@ -1,0 +1,211 @@
+[
+  {
+    "sid": "assertion:sushi-appointed-hangzhou",
+    "subjectSid": "event:appointment:sushi-hangzhou-1071",
+    "predicate": "hasAppointee",
+    "objectSid": "person:sushi",
+    "objectValue": null,
+    "temporalExtentSid": "time:1071-year",
+    "status": "accepted",
+    "confidence": 0.99,
+    "rationale": "两条 primary source 均明确记通判杭州，年谱用于年级定位。"
+  },
+  {
+    "sid": "assertion:sushi-served-hangzhou",
+    "subjectSid": "service:sushi-hangzhou-1071",
+    "predicate": "heldDutyAt",
+    "objectSid": "office:tongpan",
+    "objectValue": null,
+    "temporalExtentSid": "time:1071-1074-range",
+    "status": "accepted",
+    "confidence": 0.97,
+    "rationale": "任命之外，两条传记材料均叙其在杭州因法便民，支持实际履职。"
+  },
+  {
+    "sid": "assertion:sushi-moved-hangzhou-mizhou",
+    "subjectSid": "event:movement:sushi-hangzhou-mizhou-1074",
+    "predicate": "movedTo",
+    "objectSid": "place:mizhou",
+    "objectValue": null,
+    "temporalExtentSid": "time:1074-year",
+    "status": "accepted",
+    "confidence": 0.98,
+    "rationale": "苏辙墓志明记“自杭徙知密州”，《宋史》也在杭州段后记徙知密州。"
+  },
+  {
+    "sid": "assertion:sushi-appointed-mizhou",
+    "subjectSid": "event:appointment:sushi-mizhou-1074",
+    "predicate": "hasAppointee",
+    "objectSid": "person:sushi",
+    "objectValue": null,
+    "temporalExtentSid": "time:1074-year",
+    "status": "accepted",
+    "confidence": 0.99,
+    "rationale": "两条 primary source 明确记“徙知密州/自杭徙知密州”，年谱用于年级定位。"
+  },
+  {
+    "sid": "assertion:sushi-served-mizhou",
+    "subjectSid": "service:sushi-mizhou-1074",
+    "predicate": "heldDutyAt",
+    "objectSid": "office:zhizhou",
+    "objectValue": null,
+    "temporalExtentSid": "time:1074-1076-range",
+    "status": "accepted",
+    "confidence": 0.97,
+    "rationale": "两条 primary source 叙述密州具体政务，任期年份边界由年谱限定。"
+  },
+  {
+    "sid": "assertion:sushi-moved-mizhou-xuzhou",
+    "subjectSid": "event:movement:sushi-mizhou-xuzhou-1077",
+    "predicate": "movedTo",
+    "objectSid": "place:xuzhou",
+    "objectValue": null,
+    "temporalExtentSid": "time:1077-year",
+    "status": "accepted",
+    "confidence": 0.99,
+    "rationale": "苏辙墓志明记“自密徙徐”，《宋史》记“徙知徐州”。"
+  },
+  {
+    "sid": "assertion:sushi-appointed-xuzhou",
+    "subjectSid": "event:appointment:sushi-xuzhou-1077",
+    "predicate": "hasAppointee",
+    "objectSid": "person:sushi",
+    "objectValue": null,
+    "temporalExtentSid": "time:1077-year",
+    "status": "accepted",
+    "confidence": 0.99,
+    "rationale": "两条 primary source 与年谱一致支持调任徐州。"
+  },
+  {
+    "sid": "assertion:sushi-served-xuzhou",
+    "subjectSid": "service:sushi-xuzhou-1077",
+    "predicate": "heldDutyAt",
+    "objectSid": "office:zhizhou",
+    "objectValue": null,
+    "temporalExtentSid": "time:1077-1079-range",
+    "status": "accepted",
+    "confidence": 0.99,
+    "rationale": "组织防洪的直接叙述证明实际履职，年谱限定年级任期边界。"
+  },
+  {
+    "sid": "assertion:xuzhou-flood-occurred",
+    "subjectSid": "event:xuzhou-flood-1077",
+    "predicate": "affectedPlace",
+    "objectSid": "place:xuzhou",
+    "objectValue": null,
+    "temporalExtentSid": "time:1077-year",
+    "status": "accepted",
+    "confidence": 0.99,
+    "rationale": "两条 primary source 均记河决后洪水汇于徐州城下，年谱定位于1077年。"
+  },
+  {
+    "sid": "assertion:sushi-organized-xuzhou-flood-response",
+    "subjectSid": "event:xuzhou-flood-response-1077",
+    "predicate": "organizedBy",
+    "objectSid": "person:sushi",
+    "objectValue": null,
+    "temporalExtentSid": "time:1077-year",
+    "status": "accepted",
+    "confidence": 0.99,
+    "rationale": "《宋史》和苏辙墓志均详记苏轼稳定民众、调动军卒、筑堤守城。"
+  },
+  {
+    "sid": "assertion:sushi-moved-xuzhou-huzhou",
+    "subjectSid": "event:movement:sushi-xuzhou-huzhou-1079",
+    "predicate": "movedTo",
+    "objectSid": "place:huzhou",
+    "objectValue": null,
+    "temporalExtentSid": "time:1079-year",
+    "status": "accepted",
+    "confidence": 0.96,
+    "rationale": "两条传记材料的连续次序与年谱共同支持由徐州阶段转至湖州。"
+  },
+  {
+    "sid": "assertion:sushi-appointed-huzhou",
+    "subjectSid": "event:appointment:sushi-huzhou-1079",
+    "predicate": "hasAppointee",
+    "objectSid": "person:sushi",
+    "objectValue": null,
+    "temporalExtentSid": "time:1079-year",
+    "status": "accepted",
+    "confidence": 0.99,
+    "rationale": "两条 primary source 明确记“徙知湖州”，年谱提供元丰二年年级定位。"
+  },
+  {
+    "sid": "assertion:sushi-served-huzhou",
+    "subjectSid": "service:sushi-huzhou-1079",
+    "predicate": "heldDutyAt",
+    "objectSid": "office:zhizhou",
+    "objectValue": null,
+    "temporalExtentSid": "time:1079-year",
+    "status": "accepted",
+    "confidence": 0.95,
+    "rationale": "年谱明确区分移知与到任；传记材料记其在湖州上谢表后被逮。"
+  },
+  {
+    "sid": "assertion:wutai-case-involved-sushi",
+    "subjectSid": "event:wutai-1079",
+    "predicate": "hasSubject",
+    "objectSid": "person:sushi",
+    "objectValue": null,
+    "temporalExtentSid": "time:1079-year",
+    "status": "accepted",
+    "confidence": 0.99,
+    "rationale": "两条 primary source 与年谱均记湖州谢表、诗文弹劾、台狱和处分的连续事件。"
+  },
+  {
+    "sid": "assertion:sushi-arrested-in-wutai-case",
+    "subjectSid": "event:wutai-arrest-1079",
+    "predicate": "hasSubject",
+    "objectSid": "person:sushi",
+    "objectValue": null,
+    "temporalExtentSid": "time:1079-year",
+    "status": "accepted",
+    "confidence": 0.99,
+    "rationale": "两条 primary source 均明记从湖州逮赴御史台狱。"
+  },
+  {
+    "sid": "assertion:sushi-imprisoned-in-wutai-case",
+    "subjectSid": "event:wutai-imprisonment-1079",
+    "predicate": "hasSubject",
+    "objectSid": "person:sushi",
+    "objectValue": null,
+    "temporalExtentSid": "time:1079-year",
+    "status": "accepted",
+    "confidence": 0.99,
+    "rationale": "两条 primary source 均明记台狱及长期审讯。"
+  },
+  {
+    "sid": "assertion:sushi-placed-huangzhou",
+    "subjectSid": "event:appointment:sushi-huangzhou-1079",
+    "predicate": "hasAppointee",
+    "objectSid": "person:sushi",
+    "objectValue": null,
+    "temporalExtentSid": "time:1079-year",
+    "status": "accepted",
+    "confidence": 0.99,
+    "rationale": "两条 primary source 明记“以黄州团练副使安置”，年谱补充“本州安置”。"
+  },
+  {
+    "sid": "assertion:sushi-moved-to-huangzhou",
+    "subjectSid": "event:movement:sushi-huzhou-huangzhou-1080",
+    "predicate": "movedTo",
+    "objectSid": "place:huangzhou",
+    "objectValue": null,
+    "temporalExtentSid": "time:1080-year",
+    "status": "accepted",
+    "confidence": 0.97,
+    "rationale": "处分来源与年谱1080年抵达记录共同支持，路线细节保持未知。"
+  },
+  {
+    "sid": "assertion:sushi-resided-huangzhou",
+    "subjectSid": "service:sushi-huangzhou-residence-1080",
+    "predicate": "residedAt",
+    "objectSid": "place:huangzhou",
+    "objectValue": null,
+    "temporalExtentSid": "time:1080-1084-range",
+    "status": "accepted",
+    "confidence": 0.99,
+    "rationale": "两条 primary source 叙其在黄州生活并筑室东坡，年谱提供抵达和离开年份。"
+  }
+]

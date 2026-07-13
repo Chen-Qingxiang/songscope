@@ -29,10 +29,12 @@ export const appointmentComponentSchema = z.object({
 export const serviceEpisodeSchema = z.object({
   sid: sidSchema,
   personSid: sidSchema,
-  dutyOfficeSid: sidSchema,
+  episodeType: z.enum(['service', 'residence', 'punitive-status']),
+  dutyOfficeSid: sidSchema.nullable(),
   placeSid: sidSchema,
   temporalExtentSid: sidSchema,
   derivedFromAppointmentSid: sidSchema.nullable(),
+  createdByEventSid: sidSchema.nullable(),
   status: z.enum(['attested', 'inferred', 'disputed']),
   note: z.string().min(1)
 })

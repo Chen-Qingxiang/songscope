@@ -1,0 +1,47 @@
+[
+  {
+    "sid": "event:appointment:sushi-hangzhou-1071",
+    "personSid": "person:sushi",
+    "actionType": "appoint",
+    "eventSid": "event:appointment:sushi-hangzhou-1071",
+    "temporalExtentSid": "time:1071-year",
+    "rawExpression": "请外，通判杭州",
+    "note": "原文未以单独动作词说明除授文书，按乞外后获得杭州通判差遣整理为appoint。"
+  },
+  {
+    "sid": "event:appointment:sushi-mizhou-1074",
+    "personSid": "person:sushi",
+    "actionType": "transfer",
+    "eventSid": "event:appointment:sushi-mizhou-1074",
+    "temporalExtentSid": "time:1074-year",
+    "rawExpression": "徙知密州",
+    "note": "“徙”为调任动作，“知密州”为差遣与任所；不由任命自动生成精确任期。"
+  },
+  {
+    "sid": "event:appointment:sushi-xuzhou-1077",
+    "personSid": "person:sushi",
+    "actionType": "transfer",
+    "eventSid": "event:appointment:sushi-xuzhou-1077",
+    "temporalExtentSid": "time:1077-year",
+    "rawExpression": "徙知徐州",
+    "note": "调任动作与徐州实际履职、洪水及防洪响应分别保存。"
+  },
+  {
+    "sid": "event:appointment:sushi-huzhou-1079",
+    "personSid": "person:sushi",
+    "actionType": "transfer",
+    "eventSid": "event:appointment:sushi-huzhou-1079",
+    "temporalExtentSid": "time:1079-year",
+    "rawExpression": "徙知湖州",
+    "note": "调任湖州的动作；乌台诗案作为后续复合政治事件独立建模。"
+  },
+  {
+    "sid": "event:appointment:sushi-huangzhou-1079",
+    "personSid": "person:sushi",
+    "actionType": "place",
+    "eventSid": "event:appointment:sushi-huangzhou-1079",
+    "temporalExtentSid": "time:1079-year",
+    "rawExpression": "以黄州团练副使安置",
+    "note": "处分动作包含官名和安置状态，不表示苏轼实际主持黄州军政。"
+  }
+]

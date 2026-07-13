@@ -1,0 +1,72 @@
+[
+  {
+    "appointmentActionSid": "event:appointment:sushi-hangzhou-1071",
+    "officeConceptSid": "office:tongpan",
+    "placeSid": "place:hangzhou",
+    "componentType": "duty",
+    "rawExpression": "通判杭州"
+  },
+  {
+    "appointmentActionSid": "event:appointment:sushi-hangzhou-1071",
+    "officeConceptSid": "office:tongpan",
+    "placeSid": "place:hangzhou",
+    "componentType": "place",
+    "rawExpression": "杭州"
+  },
+  {
+    "appointmentActionSid": "event:appointment:sushi-mizhou-1074",
+    "officeConceptSid": "office:zhizhou",
+    "placeSid": "place:mizhou",
+    "componentType": "duty",
+    "rawExpression": "知密州"
+  },
+  {
+    "appointmentActionSid": "event:appointment:sushi-mizhou-1074",
+    "officeConceptSid": "office:zhizhou",
+    "placeSid": "place:mizhou",
+    "componentType": "place",
+    "rawExpression": "密州"
+  },
+  {
+    "appointmentActionSid": "event:appointment:sushi-xuzhou-1077",
+    "officeConceptSid": "office:zhizhou",
+    "placeSid": "place:xuzhou",
+    "componentType": "duty",
+    "rawExpression": "知徐州"
+  },
+  {
+    "appointmentActionSid": "event:appointment:sushi-xuzhou-1077",
+    "officeConceptSid": "office:zhizhou",
+    "placeSid": "place:xuzhou",
+    "componentType": "place",
+    "rawExpression": "徐州"
+  },
+  {
+    "appointmentActionSid": "event:appointment:sushi-huzhou-1079",
+    "officeConceptSid": "office:zhizhou",
+    "placeSid": "place:huzhou",
+    "componentType": "duty",
+    "rawExpression": "知湖州"
+  },
+  {
+    "appointmentActionSid": "event:appointment:sushi-huzhou-1079",
+    "officeConceptSid": "office:zhizhou",
+    "placeSid": "place:huzhou",
+    "componentType": "place",
+    "rawExpression": "湖州"
+  },
+  {
+    "appointmentActionSid": "event:appointment:sushi-huangzhou-1079",
+    "officeConceptSid": "office:huangzhou-tuanlian-fushi",
+    "placeSid": "place:huangzhou",
+    "componentType": "office",
+    "rawExpression": "黄州团练副使"
+  },
+  {
+    "appointmentActionSid": "event:appointment:sushi-huangzhou-1079",
+    "officeConceptSid": "office:anzhi",
+    "placeSid": "place:huangzhou",
+    "componentType": "status",
+    "rawExpression": "本州安置"
+  }
+]

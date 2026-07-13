@@ -1,0 +1,62 @@
+[
+  {
+    "sid": "place:hangzhou",
+    "preferredName": "杭州",
+    "historicalName": "杭州",
+    "placeType": "prefecture",
+    "longitude": 120.1551,
+    "latitude": 30.2741,
+    "geometryStatus": "modern-proxy",
+    "note": "现代杭州城市中心近似点，仅用于轨迹示意，不代表北宋杭州州界或精确治所。"
+  },
+  {
+    "sid": "place:mizhou",
+    "preferredName": "密州",
+    "historicalName": "密州",
+    "placeType": "prefecture",
+    "longitude": 119.4101,
+    "latitude": 35.9957,
+    "geometryStatus": "modern-proxy",
+    "note": "现代诸城对应近似点，仅用于轨迹示意，不代表北宋密州边界。"
+  },
+  {
+    "sid": "place:xuzhou",
+    "preferredName": "徐州",
+    "historicalName": "徐州",
+    "placeType": "prefecture",
+    "longitude": 117.19,
+    "latitude": 34.26,
+    "geometryStatus": "modern-proxy",
+    "note": "现代徐州城市中心近似点，仅用于轨迹示意，不代表北宋徐州边界或洪水范围。"
+  },
+  {
+    "sid": "place:huzhou",
+    "preferredName": "湖州",
+    "historicalName": "湖州",
+    "placeType": "prefecture",
+    "longitude": 120.09,
+    "latitude": 30.89,
+    "geometryStatus": "modern-proxy",
+    "note": "现代湖州城市中心近似点，仅用于轨迹示意，不代表北宋湖州边界。"
+  },
+  {
+    "sid": "place:kaifeng",
+    "preferredName": "东京开封府",
+    "historicalName": "東京開封府",
+    "placeType": "capital",
+    "longitude": 114.31,
+    "latitude": 34.8,
+    "geometryStatus": "modern-proxy",
+    "note": "现代开封城市中心近似点，用于表示御史台狱所在首都语境，不表示具体狱址。"
+  },
+  {
+    "sid": "place:huangzhou",
+    "preferredName": "黄州",
+    "historicalName": "黃州",
+    "placeType": "prefecture",
+    "longitude": 114.87,
+    "latitude": 30.45,
+    "geometryStatus": "modern-proxy",
+    "note": "现代黄冈对应近似点，仅用于轨迹示意，不代表北宋黄州边界或苏轼居所精确坐标。"
+  }
+]

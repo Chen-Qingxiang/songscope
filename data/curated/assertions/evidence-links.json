@@ -1,0 +1,77 @@
+[
+  { "assertionSid": "assertion:sushi-appointed-hangzhou", "locatorSid": "locator:songshi-338-hangzhou-mizhou", "stance": "supports", "note": "直接记“请外，通判杭州”。" },
+  { "assertionSid": "assertion:sushi-appointed-hangzhou", "locatorSid": "locator:suzhe-muzhiming-hangzhou-mizhou", "stance": "supports", "note": "苏辙墓志直接记“乞外任避之，通判杭州”。" },
+  { "assertionSid": "assertion:sushi-appointed-hangzhou", "locatorSid": "locator:yearbook-1071-hangzhou", "stance": "supports", "note": "用于确定熙宁四年年级和到任语境。" },
+
+  { "assertionSid": "assertion:sushi-served-hangzhou", "locatorSid": "locator:songshi-338-hangzhou-mizhou", "stance": "supports", "note": "原文叙其在杭州因法便民。" },
+  { "assertionSid": "assertion:sushi-served-hangzhou", "locatorSid": "locator:suzhe-muzhiming-hangzhou-mizhou", "stance": "supports", "note": "墓志叙述杭州吏民与地方事务。" },
+  { "assertionSid": "assertion:sushi-served-hangzhou", "locatorSid": "locator:yearbook-1071-hangzhou", "stance": "supports", "note": "用于年级任职边界。" },
+
+  { "assertionSid": "assertion:sushi-moved-hangzhou-mizhou", "locatorSid": "locator:songshi-338-hangzhou-mizhou", "stance": "supports", "note": "杭州段后直接记“徙知密州”。" },
+  { "assertionSid": "assertion:sushi-moved-hangzhou-mizhou", "locatorSid": "locator:suzhe-muzhiming-hangzhou-mizhou", "stance": "supports", "note": "明确记“自杭徙知密州”。" },
+  { "assertionSid": "assertion:sushi-moved-hangzhou-mizhou", "locatorSid": "locator:yearbook-1074-mizhou", "stance": "supports", "note": "用于1074年级定位。" },
+
+  { "assertionSid": "assertion:sushi-appointed-mizhou", "locatorSid": "locator:songshi-338-hangzhou-mizhou", "stance": "supports", "note": "直接出现“徙知密州”。" },
+  { "assertionSid": "assertion:sushi-appointed-mizhou", "locatorSid": "locator:suzhe-muzhiming-hangzhou-mizhou", "stance": "supports", "note": "墓志直接记自杭徙知密州。" },
+  { "assertionSid": "assertion:sushi-appointed-mizhou", "locatorSid": "locator:yearbook-1074-mizhou", "stance": "supports", "note": "提供熙宁七年年级。" },
+
+  { "assertionSid": "assertion:sushi-served-mizhou", "locatorSid": "locator:songshi-338-hangzhou-mizhou", "stance": "supports", "note": "任命后叙述密州手实法政务。" },
+  { "assertionSid": "assertion:sushi-served-mizhou", "locatorSid": "locator:suzhe-muzhiming-hangzhou-mizhou", "stance": "supports", "note": "墓志叙述密州具体政务。" },
+  { "assertionSid": "assertion:sushi-served-mizhou", "locatorSid": "locator:yearbook-1074-mizhou", "stance": "supports", "note": "用于到任年级边界。" },
+
+  { "assertionSid": "assertion:sushi-moved-mizhou-xuzhou", "locatorSid": "locator:songshi-338-xuzhou-flood", "stance": "supports", "note": "直接记“徙知徐州”。" },
+  { "assertionSid": "assertion:sushi-moved-mizhou-xuzhou", "locatorSid": "locator:suzhe-muzhiming-xuzhou-flood", "stance": "supports", "note": "直接记“自密徙徐”。" },
+  { "assertionSid": "assertion:sushi-moved-mizhou-xuzhou", "locatorSid": "locator:yearbook-1077-xuzhou", "stance": "supports", "note": "用于1077年级定位。" },
+
+  { "assertionSid": "assertion:sushi-appointed-xuzhou", "locatorSid": "locator:songshi-338-xuzhou-flood", "stance": "supports", "note": "直接记徙知徐州。" },
+  { "assertionSid": "assertion:sushi-appointed-xuzhou", "locatorSid": "locator:suzhe-muzhiming-xuzhou-flood", "stance": "supports", "note": "墓志记自密徙徐。" },
+  { "assertionSid": "assertion:sushi-appointed-xuzhou", "locatorSid": "locator:yearbook-1077-xuzhou", "stance": "supports", "note": "提供熙宁十年年级。" },
+
+  { "assertionSid": "assertion:sushi-served-xuzhou", "locatorSid": "locator:songshi-338-xuzhou-flood", "stance": "supports", "note": "组织守城的叙述支持实际履职。" },
+  { "assertionSid": "assertion:sushi-served-xuzhou", "locatorSid": "locator:suzhe-muzhiming-xuzhou-flood", "stance": "supports", "note": "墓志详记徐州履职行为。" },
+  { "assertionSid": "assertion:sushi-served-xuzhou", "locatorSid": "locator:yearbook-1077-xuzhou", "stance": "supports", "note": "用于到任年级边界。" },
+
+  { "assertionSid": "assertion:xuzhou-flood-occurred", "locatorSid": "locator:songshi-338-xuzhou-flood", "stance": "supports", "note": "直接叙述河决、洪水汇城下。" },
+  { "assertionSid": "assertion:xuzhou-flood-occurred", "locatorSid": "locator:suzhe-muzhiming-xuzhou-flood", "stance": "supports", "note": "独立 source work 叙述同一灾害。" },
+  { "assertionSid": "assertion:xuzhou-flood-occurred", "locatorSid": "locator:yearbook-1077-xuzhou", "stance": "supports", "note": "用于1077年级定位。" },
+
+  { "assertionSid": "assertion:sushi-organized-xuzhou-flood-response", "locatorSid": "locator:songshi-338-xuzhou-flood", "stance": "supports", "note": "详记调动军卒、筑堤和分堵守城。" },
+  { "assertionSid": "assertion:sushi-organized-xuzhou-flood-response", "locatorSid": "locator:suzhe-muzhiming-xuzhou-flood", "stance": "supports", "note": "墓志详记苏轼亲入武卫营与筑堤。" },
+  { "assertionSid": "assertion:sushi-organized-xuzhou-flood-response", "locatorSid": "locator:yearbook-1077-xuzhou", "stance": "supports", "note": "用于年级定位，不替代原始叙述。" },
+
+  { "assertionSid": "assertion:sushi-moved-xuzhou-huzhou", "locatorSid": "locator:songshi-338-huzhou-wutai-huangzhou", "stance": "supports", "note": "徐州段后连续记“徙知湖州”。" },
+  { "assertionSid": "assertion:sushi-moved-xuzhou-huzhou", "locatorSid": "locator:suzhe-muzhiming-huzhou-wutai-huangzhou", "stance": "supports", "note": "墓志连续记徐州之后徙知湖州。" },
+  { "assertionSid": "assertion:sushi-moved-xuzhou-huzhou", "locatorSid": "locator:yearbook-1079-huzhou-wutai", "stance": "supports", "note": "明确记录移知湖州的年级。" },
+
+  { "assertionSid": "assertion:sushi-appointed-huzhou", "locatorSid": "locator:songshi-338-huzhou-wutai-huangzhou", "stance": "supports", "note": "直接记徙知湖州。" },
+  { "assertionSid": "assertion:sushi-appointed-huzhou", "locatorSid": "locator:suzhe-muzhiming-huzhou-wutai-huangzhou", "stance": "supports", "note": "墓志直接记徙知湖州。" },
+  { "assertionSid": "assertion:sushi-appointed-huzhou", "locatorSid": "locator:yearbook-1079-huzhou-wutai", "stance": "supports", "note": "提供元丰二年年级。" },
+
+  { "assertionSid": "assertion:sushi-served-huzhou", "locatorSid": "locator:songshi-338-huzhou-wutai-huangzhou", "stance": "supports", "note": "记到湖州上表谢恩的任职语境。" },
+  { "assertionSid": "assertion:sushi-served-huzhou", "locatorSid": "locator:suzhe-muzhiming-huzhou-wutai-huangzhou", "stance": "supports", "note": "墓志记湖州谢表后被逮。" },
+  { "assertionSid": "assertion:sushi-served-huzhou", "locatorSid": "locator:yearbook-1079-huzhou-wutai", "stance": "supports", "note": "明确区分移知与到任。" },
+
+  { "assertionSid": "assertion:wutai-case-involved-sushi", "locatorSid": "locator:songshi-338-huzhou-wutai-huangzhou", "stance": "supports", "note": "完整叙述弹劾、台狱与处分。" },
+  { "assertionSid": "assertion:wutai-case-involved-sushi", "locatorSid": "locator:suzhe-muzhiming-huzhou-wutai-huangzhou", "stance": "supports", "note": "墓志叙述同一连续事件。" },
+  { "assertionSid": "assertion:wutai-case-involved-sushi", "locatorSid": "locator:yearbook-1079-huzhou-wutai", "stance": "supports", "note": "用于年级及子事件顺序。" },
+
+  { "assertionSid": "assertion:sushi-arrested-in-wutai-case", "locatorSid": "locator:songshi-338-huzhou-wutai-huangzhou", "stance": "supports", "note": "直接记逮赴台狱。" },
+  { "assertionSid": "assertion:sushi-arrested-in-wutai-case", "locatorSid": "locator:suzhe-muzhiming-huzhou-wutai-huangzhou", "stance": "supports", "note": "墓志直接记遣官逮赴御史狱。" },
+  { "assertionSid": "assertion:sushi-arrested-in-wutai-case", "locatorSid": "locator:yearbook-1079-huzhou-wutai", "stance": "supports", "note": "用于元丰二年年级顺序。" },
+
+  { "assertionSid": "assertion:sushi-imprisoned-in-wutai-case", "locatorSid": "locator:songshi-338-huzhou-wutai-huangzhou", "stance": "supports", "note": "直接记台狱与锻炼久之。" },
+  { "assertionSid": "assertion:sushi-imprisoned-in-wutai-case", "locatorSid": "locator:suzhe-muzhiming-huzhou-wutai-huangzhou", "stance": "supports", "note": "墓志记付狱、锻炼与促具狱。" },
+  { "assertionSid": "assertion:sushi-imprisoned-in-wutai-case", "locatorSid": "locator:yearbook-1079-huzhou-wutai", "stance": "supports", "note": "用于子事件顺序。" },
+
+  { "assertionSid": "assertion:sushi-placed-huangzhou", "locatorSid": "locator:songshi-338-huzhou-wutai-huangzhou", "stance": "supports", "note": "直接记以黄州团练副使安置。" },
+  { "assertionSid": "assertion:sushi-placed-huangzhou", "locatorSid": "locator:suzhe-muzhiming-huzhou-wutai-huangzhou", "stance": "supports", "note": "墓志直接记相同处分。" },
+  { "assertionSid": "assertion:sushi-placed-huangzhou", "locatorSid": "locator:yearbook-1079-huzhou-wutai", "stance": "supports", "note": "提供本州安置与元丰二年年级。" },
+
+  { "assertionSid": "assertion:sushi-moved-to-huangzhou", "locatorSid": "locator:songshi-338-huzhou-wutai-huangzhou", "stance": "supports", "note": "处分及随后在黄州生活的连续叙述支持目的地。" },
+  { "assertionSid": "assertion:sushi-moved-to-huangzhou", "locatorSid": "locator:suzhe-muzhiming-huzhou-wutai-huangzhou", "stance": "supports", "note": "墓志同样叙述安置后黄州生活。" },
+  { "assertionSid": "assertion:sushi-moved-to-huangzhou", "locatorSid": "locator:yearbook-1080-1084-huangzhou", "stance": "supports", "note": "明确记1080年抵黄州。" },
+
+  { "assertionSid": "assertion:sushi-resided-huangzhou", "locatorSid": "locator:songshi-338-huzhou-wutai-huangzhou", "stance": "supports", "note": "叙述与田父野老相从并筑室东坡。" },
+  { "assertionSid": "assertion:sushi-resided-huangzhou", "locatorSid": "locator:suzhe-muzhiming-huzhou-wutai-huangzhou", "stance": "supports", "note": "墓志叙述黄州生活与筑室。" },
+  { "assertionSid": "assertion:sushi-resided-huangzhou", "locatorSid": "locator:yearbook-1080-1084-huangzhou", "stance": "supports", "note": "用于抵达与离开年份边界。" }
+]

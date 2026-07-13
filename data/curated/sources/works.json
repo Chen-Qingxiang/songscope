@@ -1,0 +1,20 @@
+[
+  {
+    "sid": "source:work:songshi",
+    "title": "《宋史》",
+    "creator": "脱脱等",
+    "workType": "primary-source"
+  },
+  {
+    "sid": "source:work:suzhe-muzhiming",
+    "title": "《亡兄子瞻端明墓志铭》",
+    "creator": "苏辙",
+    "workType": "primary-source"
+  },
+  {
+    "sid": "source:work:li-zhengping-sushi-fashu",
+    "title": "《苏轼法书》",
+    "creator": "李正平",
+    "workType": "secondary-scholarship"
+  }
+]

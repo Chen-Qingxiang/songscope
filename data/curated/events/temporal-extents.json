@@ -1,0 +1,101 @@
+[
+  {
+    "sid": "time:1071-year",
+    "originalText": "熙宁四年",
+    "normalizedStart": "1071-01-01",
+    "normalizedEnd": "1071-12-31",
+    "precision": "year",
+    "certainty": "exact",
+    "calendar": "chinese-regnal",
+    "conversionMethod": "regnal-year-table",
+    "conversionNote": "年谱明确并列熙宁四年与1071；本轮不转换农历月日。"
+  },
+  {
+    "sid": "time:1074-year",
+    "originalText": "熙宁七年",
+    "normalizedStart": "1074-01-01",
+    "normalizedEnd": "1074-12-31",
+    "precision": "year",
+    "certainty": "exact",
+    "calendar": "chinese-regnal",
+    "conversionMethod": "regnal-year-table",
+    "conversionNote": "年谱明确并列熙宁七年与1074；月日信息未进入本轮归一化。"
+  },
+  {
+    "sid": "time:1077-year",
+    "originalText": "熙宁十年",
+    "normalizedStart": "1077-01-01",
+    "normalizedEnd": "1077-12-31",
+    "precision": "year",
+    "certainty": "exact",
+    "calendar": "chinese-regnal",
+    "conversionMethod": "regnal-year-table",
+    "conversionNote": "年谱明确并列熙宁十年与1077；不据现代日期反推具体农历日。"
+  },
+  {
+    "sid": "time:1079-year",
+    "originalText": "元丰二年",
+    "normalizedStart": "1079-01-01",
+    "normalizedEnd": "1079-12-31",
+    "precision": "year",
+    "certainty": "exact",
+    "calendar": "chinese-regnal",
+    "conversionMethod": "regnal-year-table",
+    "conversionNote": "年谱明确并列元丰二年与1079；本轮统一保持year precision。"
+  },
+  {
+    "sid": "time:1080-year",
+    "originalText": "元丰三年",
+    "normalizedStart": "1080-01-01",
+    "normalizedEnd": "1080-12-31",
+    "precision": "year",
+    "certainty": "exact",
+    "calendar": "chinese-regnal",
+    "conversionMethod": "regnal-year-table",
+    "conversionNote": "年谱明确并列元丰三年与1080；抵达黄州只按年级展示。"
+  },
+  {
+    "sid": "time:1080-1084-range",
+    "originalText": "元丰三年至元丰七年",
+    "normalizedStart": "1080-01-01",
+    "normalizedEnd": "1084-12-31",
+    "precision": "range",
+    "certainty": "approximate",
+    "calendar": "chinese-regnal",
+    "conversionMethod": "regnal-year-table",
+    "conversionNote": "按年谱1080年抵黄州、1084年离黄州的年份边界归一；不声称全年均在黄州。"
+  },
+  {
+    "sid": "time:1071-1074-range",
+    "originalText": "熙宁四年至熙宁七年",
+    "normalizedStart": "1071-01-01",
+    "normalizedEnd": "1074-12-31",
+    "precision": "range",
+    "certainty": "approximate",
+    "calendar": "chinese-regnal",
+    "conversionMethod": "career-year-bounds",
+    "conversionNote": "任职阶段由1071到任杭州与1074改知密州的年级记录界定；不生成具体到离任日期。"
+  },
+  {
+    "sid": "time:1074-1076-range",
+    "originalText": "熙宁七年至熙宁九年",
+    "normalizedStart": "1074-01-01",
+    "normalizedEnd": "1076-12-31",
+    "precision": "range",
+    "certainty": "approximate",
+    "calendar": "chinese-regnal",
+    "conversionMethod": "career-year-bounds",
+    "conversionNote": "任职阶段由1074到任密州与1076离密州的年级记录界定；不生成具体月日。"
+  },
+  {
+    "sid": "time:1077-1079-range",
+    "originalText": "熙宁十年至元丰二年",
+    "normalizedStart": "1077-01-01",
+    "normalizedEnd": "1079-12-31",
+    "precision": "range",
+    "certainty": "approximate",
+    "calendar": "chinese-regnal",
+    "conversionMethod": "career-year-bounds",
+    "conversionNote": "任职阶段由1077到任徐州与1079移知湖州的年级记录界定；不生成具体月日。"
+  }
+]

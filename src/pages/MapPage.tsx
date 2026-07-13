@@ -3,7 +3,7 @@ import { SongMap } from '../components/SongMap'
 export function MapPage() {
   return (
     <div className="page-stack">
-      <header className="page-heading"><div><p className="eyebrow">Historical GIS</p><h1>人物与事件的空间轨迹</h1><p>当前为现代城市近似坐标的交互原型；正式数据层将保留原文地名、历史行政区、现代对应与定位可信度。</p></div></header>
+      <header className="page-heading"><div><p className="eyebrow">Verified historical GIS projection</p><h1>杭州—密州—徐州—湖州—黄州轨迹</h1><p>地点来自正式 API；点位均标明解析状态，连线只表达有证据的先后地点，不伪装为实际道路或古代行政区边界。</p></div></header>
       <section className="panel"><SongMap /></section>
       <section className="method-grid">
         <article className="method-card"><span>01</span><h3>不覆盖原文</h3><p>“密州”“诸城县”“今山东诸城”分别存储，不把现代地名直接替换进史料。</p></article>
